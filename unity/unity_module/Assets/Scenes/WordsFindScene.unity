@@ -311,6 +311,22 @@ PrefabInstance:
       propertyPath: m_Pivot.y
       value: 0.5
       objectReference: {fileID: 0}
+    - target: {fileID: 875016598524059845, guid: 6dc947e6cb161e24c9d07814eb63472f,
+        type: 3}
+      propertyPath: TileGameObject
+      value: 
+      objectReference: {fileID: 6918042026380163437, guid: c74bb59b051bf7c41b02b63ae61ef18a,
+        type: 3}
+    - target: {fileID: 875016598524059845, guid: 6dc947e6cb161e24c9d07814eb63472f,
+        type: 3}
+      propertyPath: TilesPerRow
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 875016598524059845, guid: 6dc947e6cb161e24c9d07814eb63472f,
+        type: 3}
+      propertyPath: TilesPerColumn
+      value: 6
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6dc947e6cb161e24c9d07814eb63472f, type: 3}
 --- !u!1001 &3487355705678785264
@@ -380,6 +396,31 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3487355707264464847, guid: 749f3784a58959842b34573b31a5369f,
+        type: 3}
+      propertyPath: tile
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 3487355707264464847, guid: 749f3784a58959842b34573b31a5369f,
+        type: 3}
+      propertyPath: PaddingLeft
+      value: 0.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3487355707264464847, guid: 749f3784a58959842b34573b31a5369f,
+        type: 3}
+      propertyPath: PaddingRight
+      value: 0.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3487355707264464847, guid: 749f3784a58959842b34573b31a5369f,
+        type: 3}
+      propertyPath: Rows
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 3487355707264464847, guid: 749f3784a58959842b34573b31a5369f,
+        type: 3}
+      propertyPath: Columns
+      value: 5
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 749f3784a58959842b34573b31a5369f, type: 3}
 --- !u!1001 &8352443584502046785
@@ -393,6 +434,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Background
+      objectReference: {fileID: 0}
+    - target: {fileID: 8352443583169125215, guid: d8791b0c4a252f940b741d49fc501016,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8352443583169125214, guid: d8791b0c4a252f940b741d49fc501016,
         type: 3}
