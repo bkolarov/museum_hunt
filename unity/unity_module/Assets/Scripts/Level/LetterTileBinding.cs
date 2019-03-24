@@ -34,13 +34,12 @@ namespace LetterTile
         // Start is called before the first frame update
         void Start()
         {
-            var textGameObject = GameObject.Find($"{name}/Canvas/Text");
+            var textGameObject = transform.Find("Canvas/Text").gameObject;
             TextScriptComponent = textGameObject.GetComponent(typeof(Text)) as Text;
         }
 
         void OnMouseDown()
         {
-            Debug.Log($"\"{Letter}\" clicked!");
             OnTileClick?.Invoke(Letter);
         }
 
