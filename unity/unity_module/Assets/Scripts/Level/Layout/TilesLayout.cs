@@ -22,6 +22,7 @@ namespace TilesLayout
             set
             {
                 AssertGridSize(value);
+                InvalidateContent();
                 _Content = value;
                 DisplayContent(value);
             }
@@ -34,15 +35,9 @@ namespace TilesLayout
 
         }
 
-        // Update is called once per frame
-        void Update()
-        {
-
-        }
-
         private void DisplayContent(TilesLayoutContent content)
         {
-            InvalidateContent();
+            content.Measure();
 
             var fullWidth = content.Width + PaddingLeft + PaddingRight;
             AdjustCamera(fullWidth);
@@ -79,7 +74,15 @@ namespace TilesLayout
 
         private void InvalidateContent()
         {
+            if (Content != null && Content.Items != null)
+            {
+                foreach (TilesLayoutCell cell in Content.Items)
+                {
+                    Destroy(cell.GameObject);
+                }
 
+                Content = null;
+            }
         }
 
         private void AdjustCamera(float width)

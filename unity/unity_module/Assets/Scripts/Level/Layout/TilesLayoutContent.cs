@@ -109,5 +109,4 @@ namespace TilesLayout
             return measuredHeight;
         }
     }
-
 }
