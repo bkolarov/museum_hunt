@@ -1,10 +1,11 @@
-﻿using System.Collections;
+﻿using LetterTile;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 namespace TilesLayout
 {
-    public class TilesLayout : MonoBehaviour
+    public class TilesLayout : MonoBehaviour, IClickable
     {
         public int Columns = 0;
         public int Rows = 0;
@@ -13,6 +14,9 @@ namespace TilesLayout
         public float PaddingRight = 0;
 
         private TilesLayoutContent _Content;
+        private GameObjectClickListener OnItemClick;
+
+        public event GameObjectClickListener OnGameObjectClick;
 
         public TilesLayoutContent Content {
             get
@@ -31,8 +35,7 @@ namespace TilesLayout
         // Start is called before the first frame update
         void Start()
         {
-            //var newTile = Instantiate(tile, transform);
-
+            OnItemClick = (gameObject) => OnGameObjectClick?.Invoke(gameObject);
         }
 
         private void DisplayContent(TilesLayoutContent content)
@@ -65,6 +68,10 @@ namespace TilesLayout
                     if (item.GameObject != null)
                     {
                         item.GameObject = Instantiate(item.GameObject, new Vector3(x, y, 0), item.GameObject.transform.rotation);
+                        if (item.GameObject.GetComponent(typeof(IClickableProvider)) is IClickableProvider iClickableProvider)
+                        {
+                            iClickableProvider.GetIClickable().OnGameObjectClick += OnItemClick;
+                        }
                     }
 
                     startY += item.MeasuredHeight;
