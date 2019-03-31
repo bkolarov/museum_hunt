@@ -1,22 +1,22 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using TilesLayout;
 using UnityEngine;
 using UnityEngine.UI;
 
 namespace LetterTile
 {
-    public class LetterTileBinding : MonoBehaviour
+    public class LetterTileBinding : MonoBehaviour, IClickable
     {
         private Text TextScriptComponent;
-
-        public delegate void TileOnClickListener(string letter);
-        public event TileOnClickListener OnTileClick;
 
         private Field PendingBindingFields = Field.NONE;
 
         private string _Letter;
         private bool _Selected = false;
+
+        public event GameObjectClickListener OnGameObjectClick;
 
         public string Letter
         {
@@ -86,7 +86,8 @@ namespace LetterTile
         void OnMouseDown()
         {
             Selected = !Selected;
-            OnTileClick?.Invoke(Letter);
+            //            OnTileClick?.Invoke(Letter);
+            OnGameObjectClick?.Invoke(gameObject);
         }
 
         [Flags]
