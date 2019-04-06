@@ -18,7 +18,8 @@ namespace TilesLayout
 
         public event GameObjectClickListener OnGameObjectClick;
 
-        public TilesLayoutContent Content {
+        public TilesLayoutContent Content
+        {
             get
             {
                 return _Content;
@@ -51,7 +52,8 @@ namespace TilesLayout
                 if (column == 0)
                 {
                     startX = -fullWidth / 2 + PaddingLeft;
-                } else
+                }
+                else
                 {
                     TilesLayoutCell previousCell = content.Items[column - 1, 0];
                     startX = previousCell.GameObject.transform.localPosition.x + previousCell.MeasuredWidth / 2;
