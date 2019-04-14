@@ -14,10 +14,10 @@ namespace Level.Repository
             var words = new List<string>
             {
                 "Pesho",
-                "Ivancho",
                 "Mariika",
                 "Kircho",
-                "Tisho"
+                "Tisho",
+                "Cecka"
             };
             LevelData = new LevelData(words);
         }

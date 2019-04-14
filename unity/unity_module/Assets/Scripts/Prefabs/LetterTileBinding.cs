@@ -26,7 +26,7 @@ namespace LetterTile
             }
             set
             {
-                if (!string.IsNullOrEmpty(value) && value.Length != 1)
+                if (string.IsNullOrEmpty(value) || value.Length != 1)
                 {
                     throw new InvalidOperationException("The value must be with length 1");
                 }

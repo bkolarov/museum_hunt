@@ -13,14 +13,18 @@ namespace TilesLayout
         public float MarginRight { get; set; }
         public float MarginBottom { get; set; }
 
-        public TilesLayoutCell(GameObject gameObject)
+        public TilesLayoutCell()
         {
-            GameObject = gameObject;
             // TODO - make a TilesLayoutCell prefab and set those from the Unity editor.
             MarginLeft = 0.1f;
             MarginRight = 0.1f;
             MarginTop = 0.1f;
             MarginBottom = 0.1f;
+        }
+
+        public TilesLayoutCell(GameObject gameObject) : this()
+        {
+            GameObject = gameObject;
         }
 
         public float MeasuredWidth

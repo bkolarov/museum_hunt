@@ -327,6 +327,16 @@ PrefabInstance:
       propertyPath: TilesPerColumn
       value: 6
       objectReference: {fileID: 0}
+    - target: {fileID: 875016598524059845, guid: 6dc947e6cb161e24c9d07814eb63472f,
+        type: 3}
+      propertyPath: ObstacleGameObject
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 875016598524059845, guid: 6dc947e6cb161e24c9d07814eb63472f,
+        type: 3}
+      propertyPath: EmptyGameObject
+      value: 
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6dc947e6cb161e24c9d07814eb63472f, type: 3}
 --- !u!1001 &3179820862639550489

@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using Util;
 using Random = System.Random;
 
 namespace Level
@@ -13,23 +14,19 @@ namespace Level
 
         public List<string> GenerateLettersFromWords(Params parameters)
         {
-            var permutations = CreatePermutations("", parameters.Words, parameters.MaxLength);
+            var permutations = CreatePermutations("", parameters.Words, parameters.MinLength, parameters.MaxLength);
             var random = new Random();
 
-            List<string> result = permutations
-                .Select(permutation => permutation)
-                .Where(permutation => permutation.Length >= parameters.MinLength)
-                .ToList()
-                .RandomElement(random)
+            return permutations
+                .OrderBy(element => element.Length)
+                .Last()
                 .ToList()
                 .Select(character => character.ToString())
                 .ToList()
-                .Shuffle(random);
-
-            return result;
+                .ShuffleWith(random);
         }
 
-        private List<string> CreatePermutations(string combination, List<string> toCombineWith, int maxOutputLength)
+        private List<string> CreatePermutations(string combination, List<string> toCombineWith, int minOutputLength, int maxOutputLength)
         {
             var result = new List<string>();
 
@@ -40,17 +37,18 @@ namespace Level
                     .Where(el => el != word)
                     .ToList();
 
-                if (combination.Length + word.Length < maxOutputLength)
+                var newCombinaction = combination + word;
+                if (newCombinaction.Length < maxOutputLength)
                 {
-                    result.AddRange(CreatePermutations(combination + word, newList, maxOutputLength));
+                    if (newCombinaction.Length > minOutputLength)
+                    {
+                        result.Add(newCombinaction);
+                    }
+                    result.AddRange(CreatePermutations(newCombinaction, newList, minOutputLength, maxOutputLength));
                 }
                 else
                 {
-                    var toAdd = combination;
-                    if (combination.Length + word.Length == maxOutputLength)
-                    {
-                        toAdd += word;
-                    }
+                    var toAdd = newCombinaction.Length == maxOutputLength ? newCombinaction : combination;
                     result.Add(toAdd);
                     break;
                 }
@@ -63,7 +61,7 @@ namespace Level
         {
             public List<string> Words { get; set; }
 
-            public int MinLength { get; set; }
+            public int MinLength { get; set; } = 0;
             public int MaxLength { get; set; }
 
             public Params(List<string> words, int minLength, int maxLength)
@@ -77,29 +75,6 @@ namespace Level
             {
                 Words = words;
             }
-        }
-    }
-
-    internal static class ListExtension
-    {
-        public static string RandomElement(this List<string> list, Random random)
-        {
-            return list[random.Next(list.Count)];
-        }
-
-        public static List<string> Shuffle(this List<string> list, Random random)
-        {
-            int n = list.Count;
-            while (n > 1)
-            {
-                n--;
-                int k = random.Next(n + 1);
-                string value = list[k];
-                list[k] = list[n];
-                list[n] = value;
-            }
-
-            return list;
         }
     }
 

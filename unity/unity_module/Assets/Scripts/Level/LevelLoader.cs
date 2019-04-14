@@ -2,16 +2,20 @@
 using Level.Repository;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
+using System.Text;
 using UnityEngine;
+using Util;
 
 namespace Level
 {
     public class LevelLoader : MonoBehaviour
     {
-        private LevelDataRepository LevelDataRepository; 
+        private LevelDataRepository LevelDataRepository;
 
         public GameObject TileGameObject;
         public GameObject ObstacleGameObject;
+        public GameObject EmptyGameObject;
 
         public int TilesPerRow;
         public int TilesPerColumn;
@@ -27,9 +31,9 @@ namespace Level
 
             var tilesLayout = GetTilesLayout();
 
-            tilesLayout.Content = content;
-
             InitCellLetters(content);
+
+            tilesLayout.Content = content;
         }
 
         private void CreateCells(TilesLayout.TilesLayoutContent content)
@@ -38,7 +42,7 @@ namespace Level
             {
                 for (int row = 0; row < TilesPerRow; row++)
                 {
-                    var cell = new TilesLayout.TilesLayoutCell(TileGameObject);
+                    var cell = new TilesLayout.TilesLayoutCell();
                     content.SetCell(cell, row, col);
                 }
             }
@@ -52,22 +56,108 @@ namespace Level
 
         private void InitCellLetters(TilesLayout.TilesLayoutContent content)
         {
+            var obstaclePositioner = new ObstaclePositioner();
+            var emptyCellPositioner = new EmptyCellPositioner();
+
+            var cells = new PathCell[content.Columns, content.Rows];
+
+            cells.ForeachIndexed((x, y, cell) => cells[x, y] = new PathCell(x, y));
+
+            int pathLength = EnsurePathExists(cells);
+            var letters = GenerateLetters(pathLength);
+            int maxObstacles = cells.Length - (letters.Count >= pathLength ? (letters.Count) : (pathLength));
+
+            PlaceRemainingLetters(cells, pathLength, letters);
+            obstaclePositioner.PlaceObstacles(cells, maxObstacles);
+            emptyCellPositioner.PlaceEmptyCells(cells);
+
+            cells.Print();
+            RenderContent(content, cells, letters);
+        }
+
+        private static void PlaceRemainingLetters(PathCell[,] cells, int pathLength, List<string> letters)
+        {
+            cells.Flatten()
+                            .Where(cell => cell.CellType != PathCell.Type.LETTER)
+                            .Take(letters.Count - pathLength)
+                            .ToList()
+                            .ShuffleWith(new System.Random())
+                            .ForEach(cell => cell.CellType = PathCell.Type.LETTER);
+        }
+
+        private void RenderContent(TilesLayout.TilesLayoutContent content, PathCell[,] cells, List<string> letters)
+        {
+            var letterGenerator = LetterGenerator(letters).GetEnumerator();
+            letterGenerator.MoveNext();
+            cells.ForeachIndexed((x, y, cell) =>
+            {
+                switch (cell.CellType)
+                {
+                    case PathCell.Type.LETTER:
+                        content.Items[x, y].GameObject = TileGameObject;
+
+                        var binding = content.Items[x, y].GameObject.GetComponent(typeof(LetterTileBinding)) as LetterTileBinding;
+                        binding.Letter = letterGenerator.Current;
+
+                        letterGenerator.MoveNext();
+                        break;
+                    case PathCell.Type.OBSTACLE:
+                        content.Items[x, y].GameObject = ObstacleGameObject;
+
+                        break;
+                    case PathCell.Type.EMPTY:
+                        content.Items[x, y].GameObject = EmptyGameObject;
+                        break;
+                }
+            });
+        }
+
+        private List<string> GenerateLetters(int pathLength)
+        {
             var letterContentCreator = new LetterContentCreator();
             var parameters = new LetterContentCreator.Params(LevelDataRepository.GetLevelData().HintWords)
             {
-                MinLength = TilesPerRow * TilesPerColumn,
+                MinLength = pathLength,
                 MaxLength = TilesPerRow * TilesPerColumn
             };
 
             var letters = letterContentCreator.GenerateLettersFromWords(parameters);
-            int i = 0;
-            foreach (TilesLayout.TilesLayoutCell cell in content.Items)
+            return letters;
+        }
+
+        private int EnsurePathExists(PathCell[,] cells)
+        {
+            var random = new System.Random();
+            var pathCreator = new PathCreator();
+            var pathLength = pathCreator.MarkPath(cells, random.Next(TilesPerRow));
+            return pathLength;
+        }
+
+        private IEnumerable<string> LetterGenerator(List<string> letters)
+        {
+            foreach (string letter in letters)
             {
-                var binding = cell.GameObject.GetComponent(typeof(LetterTileBinding)) as LetterTileBinding;
-                binding.Letter = letters[i];
-                i++;
+                yield return letter;
             }
         }
     }
 
+    public static class TempExt
+    {
+        public static void Print(this PathCell[,] cells)
+        {
+            var stringBuilder = new StringBuilder();
+            for (int y = 0; y < cells.GetLength(1); y++)
+            {
+                var l = new List<PathCell>();
+                for (int x = 0; x < cells.GetLength(0); x++)
+                {
+                    l.Add(cells[x, y]);
+                }
+                stringBuilder.AppendLine(string.Join(", ", l));
+            }
+
+            Debug.Log(stringBuilder.ToString());
+        }
+    }
 }
