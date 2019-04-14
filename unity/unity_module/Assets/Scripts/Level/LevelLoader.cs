@@ -13,7 +13,7 @@ namespace Level
     {
         private LevelDataRepository LevelDataRepository;
 
-        public GameObject TileGameObject;
+        public GameObject LetterGameObject;
         public GameObject ObstacleGameObject;
         public GameObject EmptyGameObject;
 
@@ -91,24 +91,28 @@ namespace Level
             letterGenerator.MoveNext();
             cells.ForeachIndexed((x, y, cell) =>
             {
+
+                GameObject tileGameObject = null;
                 switch (cell.CellType)
                 {
                     case PathCell.Type.LETTER:
-                        content.Items[x, y].GameObject = TileGameObject;
+                        tileGameObject = LetterGameObject;
 
-                        var binding = content.Items[x, y].GameObject.GetComponent(typeof(LetterTileBinding)) as LetterTileBinding;
+                        var binding = tileGameObject.GetComponent(typeof(LetterTileBinding)) as LetterTileBinding;
                         binding.Letter = letterGenerator.Current;
 
                         letterGenerator.MoveNext();
                         break;
                     case PathCell.Type.OBSTACLE:
-                        content.Items[x, y].GameObject = ObstacleGameObject;
+                        tileGameObject = ObstacleGameObject;
 
                         break;
                     case PathCell.Type.EMPTY:
-                        content.Items[x, y].GameObject = EmptyGameObject;
+                        tileGameObject = EmptyGameObject;
                         break;
                 }
+
+                content.Items[x, y].GameObject = tileGameObject;
             });
         }
 

@@ -331,12 +331,20 @@ PrefabInstance:
         type: 3}
       propertyPath: ObstacleGameObject
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 2292263878091986131, guid: 7687f5af5fc30fd45bbf7273adee0fa8,
+        type: 3}
     - target: {fileID: 875016598524059845, guid: 6dc947e6cb161e24c9d07814eb63472f,
         type: 3}
       propertyPath: EmptyGameObject
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 839632894317767789, guid: 5bb7471a609acc241b2d90539138516a,
+        type: 3}
+    - target: {fileID: 875016598524059845, guid: 6dc947e6cb161e24c9d07814eb63472f,
+        type: 3}
+      propertyPath: LetterGameObject
+      value: 
+      objectReference: {fileID: 6918042026380163437, guid: c74bb59b051bf7c41b02b63ae61ef18a,
+        type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6dc947e6cb161e24c9d07814eb63472f, type: 3}
 --- !u!1001 &3179820862639550489
