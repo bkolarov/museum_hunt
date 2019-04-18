@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 6918042026380163439}
   - component: {fileID: 1227494002578420530}
   - component: {fileID: 1987537807852465091}
-  - component: {fileID: 4499113058658140838}
+  - component: {fileID: 6201935429720467030}
   m_Layer: 0
   m_Name: LetterTile
   m_TagString: Untagged
@@ -107,8 +107,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5b42ed2b31fb36546b2b144828c9252a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!61 &4499113058658140838
-BoxCollider2D:
+--- !u!68 &6201935429720467030
+EdgeCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -120,19 +120,13 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
-  m_SpriteTilingProperty:
-    border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 1, y: 1}
-    newSize: {x: 1, y: 1}
-    adaptiveTilingThreshold: 0.5
-    drawMode: 0
-    adaptiveTiling: 0
-  m_AutoTiling: 0
-  serializedVersion: 2
-  m_Size: {x: 1, y: 1}
+  m_Offset: {x: 0, y: -0.5}
   m_EdgeRadius: 0
+  m_Points:
+  - {x: -0.5, y: 0}
+  - {x: -0.5, y: 1}
+  - {x: 0.5, y: 1}
+  - {x: 0.5, y: 0}
 --- !u!1 &6918042026475170389
 GameObject:
   m_ObjectHideFlags: 0
@@ -243,7 +237,6 @@ GameObject:
   - component: {fileID: 7712219176195857275}
   - component: {fileID: 1231529512668390497}
   - component: {fileID: 5523538661926998025}
-  - component: {fileID: 4724126773441773258}
   m_Layer: 0
   m_Name: Text
   m_TagString: Untagged
@@ -306,24 +299,9 @@ MonoBehaviour:
     m_MinSize: 0
     m_MaxSize: 256
     m_Alignment: 4
-    m_AlignByGeometry: 0
+    m_AlignByGeometry: 1
     m_RichText: 1
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "\u0410"
---- !u!114 &4724126773441773258
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8441415446997658232}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: -900027084, guid: f70555f144d8491a825f0804e09c671c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_EffectColor: {r: 0.79215693, g: 0.79215693, b: 0.79215693, a: 0.5}
-  m_EffectDistance: {x: 1, y: -1}
-  m_UseGraphicAlpha: 1
+  m_Text: 

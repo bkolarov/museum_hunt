@@ -1,4 +1,5 @@
 ﻿using LetterTile;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -55,7 +56,7 @@ namespace TilesLayout
                 }
                 else
                 {
-                    var previousCell = content.Items[column - 1, 0];
+                    TilesLayoutCell previousCell = content.Items[column - 1, 0];
                     startX = previousCell.GameObject.transform.localPosition.x + previousCell.MeasuredWidth / 2;
                 }
 
@@ -64,8 +65,8 @@ namespace TilesLayout
                 for (int row = 0; row < Rows; row++)
                 {
                     var item = content.Items[column, row];
-                    var x = startX + item.MeasuredWidth / 2;
-                    var y = startY + item.MeasuredHeight / 2;
+                    var x = (float)Math.Round(startX + item.MeasuredWidth / 2, 2);
+                    var y = (float)Math.Round(startY + item.MeasuredHeight / 2, 2);
 
                     if (item.GameObject != null)
                     {
