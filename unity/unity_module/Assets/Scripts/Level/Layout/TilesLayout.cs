@@ -55,7 +55,7 @@ namespace TilesLayout
                 }
                 else
                 {
-                    TilesLayoutCell previousCell = content.Items[column - 1, 0];
+                    var previousCell = content.Items[column - 1, 0];
                     startX = previousCell.GameObject.transform.localPosition.x + previousCell.MeasuredWidth / 2;
                 }
 

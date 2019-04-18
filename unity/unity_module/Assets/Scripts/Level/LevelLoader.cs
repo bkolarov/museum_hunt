@@ -31,16 +31,14 @@ namespace Level
 
             var tilesLayout = GetTilesLayout();
 
-            InitCellLetters(content);
-
-            tilesLayout.Content = content;
+            InitCellLetters(tilesLayout, content);
         }
 
         private void CreateCells(TilesLayout.TilesLayoutContent content)
         {
-            for (int col = 0; col < TilesPerColumn; col++)
+            for (int row = 0; row < TilesPerRow; row++) 
             {
-                for (int row = 0; row < TilesPerRow; row++)
+                for (int col = 0; col < TilesPerColumn; col++)
                 {
                     var cell = new TilesLayout.TilesLayoutCell();
                     content.SetCell(cell, row, col);
@@ -54,7 +52,7 @@ namespace Level
             return tilesLayoutObject.GetComponent(typeof(TilesLayout.TilesLayout)) as TilesLayout.TilesLayout;
         }
 
-        private void InitCellLetters(TilesLayout.TilesLayoutContent content)
+        private void InitCellLetters(TilesLayout.TilesLayout tilesLayout, TilesLayout.TilesLayoutContent content)
         {
             var obstaclePositioner = new ObstaclePositioner();
             var emptyCellPositioner = new EmptyCellPositioner();
@@ -73,6 +71,22 @@ namespace Level
 
             cells.Print();
             RenderContent(content, cells, letters);
+
+            tilesLayout.Content = content;
+
+            var letterGenerator = LetterGenerator(letters).GetEnumerator();
+            letterGenerator.MoveNext();
+
+            cells.Flatten()
+                .Where(cell => cell.CellType == PathCell.Type.LETTER)
+                .ToList()
+                .ForEach(cell =>
+                {
+                    var gameObject = content.Items[cell.Position.x, cell.Position.y].GameObject;
+                    var binding = gameObject.GetComponent(typeof(LetterTileBinding)) as LetterTileBinding;
+                    binding.Letter = letterGenerator.Current;
+                    letterGenerator.MoveNext();
+                });
         }
 
         private static void PlaceRemainingLetters(PathCell[,] cells, int pathLength, List<string> letters)
@@ -87,25 +101,16 @@ namespace Level
 
         private void RenderContent(TilesLayout.TilesLayoutContent content, PathCell[,] cells, List<string> letters)
         {
-            var letterGenerator = LetterGenerator(letters).GetEnumerator();
-            letterGenerator.MoveNext();
             cells.ForeachIndexed((x, y, cell) =>
             {
-
                 GameObject tileGameObject = null;
                 switch (cell.CellType)
                 {
                     case PathCell.Type.LETTER:
                         tileGameObject = LetterGameObject;
-
-                        var binding = tileGameObject.GetComponent(typeof(LetterTileBinding)) as LetterTileBinding;
-                        binding.Letter = letterGenerator.Current;
-
-                        letterGenerator.MoveNext();
                         break;
                     case PathCell.Type.OBSTACLE:
                         tileGameObject = ObstacleGameObject;
-
                         break;
                     case PathCell.Type.EMPTY:
                         tileGameObject = EmptyGameObject;
