@@ -62,7 +62,7 @@ namespace LetterTile
         void Start()
         {
             var textGameObject = transform.Find("Canvas/Text").gameObject;
-            TextScriptComponent = textGameObject.GetComponent(typeof(Text)) as Text;
+            TextScriptComponent = textGameObject.GetComponent<Text>();
         }
 
         void Update()
@@ -86,7 +86,6 @@ namespace LetterTile
         void OnMouseDown()
         {
             Selected = !Selected;
-            //            OnTileClick?.Invoke(Letter);
             OnGameObjectClick?.Invoke(gameObject);
         }
 
