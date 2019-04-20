@@ -32,6 +32,7 @@ namespace Level
             var tilesLayout = GetTilesLayout();
 
             InitCellLetters(tilesLayout, content);
+            AddSideCollisions(content);
         }
 
         private void CreateCells(TilesLayout.TilesLayoutContent content)
@@ -50,6 +51,30 @@ namespace Level
         {
             var tilesLayoutObject = GameObject.Find("TilesLayout");
             return tilesLayoutObject.GetComponent(typeof(TilesLayout.TilesLayout)) as TilesLayout.TilesLayout;
+        }
+
+        private void AddSideCollisions(TilesLayout.TilesLayoutContent content)
+        {
+            // add extra height above the layout for the starting vertical position of the character
+            // and add the botom when it's supposed to fall off
+            float extraHeight = content.Items[0, 0].MeasuredHeight;
+
+            float edgeHalfWidth = content.Width * 0.5f;
+            float edgeHalfHeight = content.Height * 0.5f + extraHeight;
+
+            var colliders = GetComponents<EdgeCollider2D>();
+
+            colliders[0].points = new List<Vector2>
+            {
+                new Vector2(-edgeHalfWidth, edgeHalfHeight),
+                new Vector2(-edgeHalfWidth, -edgeHalfHeight)
+            }.ToArray();
+
+            colliders[1].points = new List<Vector2>
+            {
+                new Vector2(edgeHalfWidth, -edgeHalfHeight),
+                new Vector2(edgeHalfWidth, edgeHalfHeight)
+            }.ToArray();
         }
 
         private void InitCellLetters(TilesLayout.TilesLayout tilesLayout, TilesLayout.TilesLayoutContent content)
