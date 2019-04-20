@@ -1,4 +1,4 @@
-﻿using LetterTile;
+using LetterTile;
 using System;
 using System.Collections;
 using System.Collections.Generic;
