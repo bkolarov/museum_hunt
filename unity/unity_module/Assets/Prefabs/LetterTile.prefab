@@ -73,7 +73,7 @@ SpriteRenderer:
   m_SortingLayerID: 63397173
   m_SortingLayer: 2
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: eeacee65d11b8dc4496da2520bdbbbee, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 40955face117828489f58e304d44f78a, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -108,6 +108,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5b42ed2b31fb36546b2b144828c9252a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  SelectedBackground: {fileID: 21300000, guid: 6b49d607cea47c24586220798d611cd1, type: 3}
+  SelectedTextColor: {r: 0.1764706, g: 0.2627451, b: 0.18431373, a: 1}
+  UnselectedBackground: {fileID: 21300000, guid: 40955face117828489f58e304d44f78a,
+    type: 3}
+  UnselectedTextColor: {r: 0.19215687, g: 0.16470589, b: 0.14117648, a: 1}
 --- !u!68 &6201935429720467030
 EdgeCollider2D:
   m_ObjectHideFlags: 0
@@ -311,7 +316,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.3372549, g: 0.10588236, b: 0.07450981, a: 1}
+  m_Color: {r: 0.19215687, g: 0.16470589, b: 0.14117648, a: 1}
   m_RaycastTarget: 1
   m_OnCullStateChanged:
     m_PersistentCalls:

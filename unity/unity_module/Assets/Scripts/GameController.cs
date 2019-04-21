@@ -40,6 +40,16 @@ public class GameController : MonoBehaviour
 
     }
 
+    public void OnBackClick()
+    {
+        
+    }
+
+    public void OnHelpClick()
+    {
+        
+    }
+
     private void OnTileClick(LetterTileBinding binding)
     {
         TextPanelBinding.Text += binding.Letter;

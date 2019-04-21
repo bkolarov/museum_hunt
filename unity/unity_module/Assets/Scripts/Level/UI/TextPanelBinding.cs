@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using TilesLayout;
 using UnityEngine;
@@ -47,6 +48,7 @@ namespace UI
             }
         }
 
+        [Flags]
         private enum Field
         {
             NONE = 0,
