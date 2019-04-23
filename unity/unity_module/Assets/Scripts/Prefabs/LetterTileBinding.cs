@@ -3,11 +3,12 @@ using System.Collections;
 using System.Collections.Generic;
 using TilesLayout;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 namespace LetterTile
 {
-    public class LetterTileBinding : MonoBehaviour, IClickable
+    public class LetterTileBinding : MonoBehaviour, IClickable, IPointerClickHandler
     {
         public Sprite SelectedBackground;
         public Color SelectedTextColor;
@@ -148,6 +149,14 @@ namespace LetterTile
         }
 
         void OnMouseDown()
+        {
+            //Selected = !Selected;
+            //BackgroundSprite = Selected ? SelectedBackground : UnselectedBackground;
+            //TextColor = Selected ? SelectedTextColor : UnselectedTextColor;
+            //OnGameObjectClick?.Invoke(gameObject);
+        }
+
+        public void OnPointerClick(PointerEventData eventData)
         {
             Selected = !Selected;
             BackgroundSprite = Selected ? SelectedBackground : UnselectedBackground;
