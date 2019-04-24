@@ -22,8 +22,6 @@ public class GameController : MonoBehaviour
     private List<string> LetterPlaceHolders;
     private Stack<LetterTileBinding> SelectedTilesStack = new Stack<LetterTileBinding>();
 
-    //    private Lazy<MsgBox> HelpDialog = new Lazy<MsgBox>(() => Resources.Load<MsgBox>("Dialogs/SingleQuestionDialog"));
-
     // Start is called before the first frame update
     void Start()
     {
@@ -59,7 +57,8 @@ public class GameController : MonoBehaviour
         {
             id = 1,
             message = "Ала бала портокала?",
-            negativeCallback = id => {
+            negativeCallback = id =>
+            {
                 Debug.Log("Abort exit!");
                 MsgBox.Close();
             },
@@ -81,7 +80,8 @@ public class GameController : MonoBehaviour
         {
             id = 1,
             message = "Ала бала портокала?",
-            positiveCallback = id => {
+            positiveCallback = id =>
+            {
                 Debug.Log("Close info!");
                 MsgBox.Close();
             },
@@ -94,6 +94,10 @@ public class GameController : MonoBehaviour
 
     private void OnTileClick(LetterTileBinding binding)
     {
+        if (binding.Selected && SelectedTilesStack.Peek() != binding) return;
+
+        binding.Selected = !binding.Selected;
+
         if (binding.Selected)
         {
             SelectedTilesStack.Push(binding);
@@ -101,11 +105,8 @@ public class GameController : MonoBehaviour
         }
         else
         {
-            if (SelectedTilesStack.Peek() == binding)
-            {
-                SelectedTilesStack.Pop();
-                LetterPlaceHolders.RemoveAt(LetterPlaceHolders.Count - 1);
-            }
+            SelectedTilesStack.Pop();
+            LetterPlaceHolders.RemoveAt(LetterPlaceHolders.Count - 1);
         }
         TextPanelBinding.Text = string.Join("", LetterPlaceHolders);
     }

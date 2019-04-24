@@ -31,15 +31,7 @@ namespace LetterTile
         {
             get
             {
-                return _BackgroundSprite;
-            }
-            set
-            {
-                if (_BackgroundSprite != value)
-                {
-                    AddPendingBindingFlag(Field.BACKGROUND_SPRITE);
-                    _BackgroundSprite = value;
-                }
+                return Selected ? SelectedBackground : UnselectedBackground;
             }
         }
 
@@ -79,6 +71,8 @@ namespace LetterTile
                 if (_Selected != value)
                 {
                     AddPendingBindingFlag(Field.SELECTED);
+                    AddPendingBindingFlag(Field.BACKGROUND_SPRITE);
+                    AddPendingBindingFlag(Field.TEXT_COLOR);
                 }
                 _Selected = value;
             }
@@ -88,15 +82,7 @@ namespace LetterTile
         {
             get
             {
-                return _TextColor;
-            }
-            set
-            {
-                if (_TextColor != value)
-                {
-                    _TextColor = value;
-                    AddPendingBindingFlag(Field.TEXT_COLOR);
-                }
+                return Selected ? SelectedTextColor : UnselectedTextColor;
             }
         }
 
@@ -148,19 +134,8 @@ namespace LetterTile
             PendingBindingFields &= ~field;
         }
 
-        void OnMouseDown()
-        {
-            //Selected = !Selected;
-            //BackgroundSprite = Selected ? SelectedBackground : UnselectedBackground;
-            //TextColor = Selected ? SelectedTextColor : UnselectedTextColor;
-            //OnGameObjectClick?.Invoke(gameObject);
-        }
-
         public void OnPointerClick(PointerEventData eventData)
         {
-            Selected = !Selected;
-            BackgroundSprite = Selected ? SelectedBackground : UnselectedBackground;
-            TextColor = Selected ? SelectedTextColor : UnselectedTextColor;
             OnGameObjectClick?.Invoke(gameObject);
         }
 
