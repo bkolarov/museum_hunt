@@ -415,9 +415,9 @@ namespace PoqXert.MessageBox
             public DialogCallback negativeCallback;
             public DialogCallback neutralCallback;
             public bool modal = false;
-            public string btnText0 = "";
-            public string btnText1 = "";
-            public string btnText2 = "";
+            public string positiveButtonText = "";
+            public string negativeButtonText = "";
+            public string cancelButtonText = "";
 
             public void Show()
             {
@@ -434,7 +434,7 @@ namespace PoqXert.MessageBox
                             positiveCallback?.Invoke(id);
                             break;
                     }
-                }, modal, btnText0, btnText1, btnText2);
+                }, modal, positiveButtonText, negativeButtonText, cancelButtonText);
             }
         }
     }

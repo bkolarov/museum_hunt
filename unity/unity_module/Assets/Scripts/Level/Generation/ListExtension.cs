@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using Random = System.Random;
+using System.Linq;
 
 namespace Util
 {
@@ -33,7 +34,7 @@ namespace Util
             }
         }
 
-        public static void ForeachIndexed<T>(this T[,] array, Apply<T> apply)
+        public static void ForeachIndexed<T>(this T[,] array, ApplyIndexedFunc<T> apply)
         {
             for (int x = 0; x < array.GetLength(0); x++)
             {
@@ -44,7 +45,23 @@ namespace Util
             }
         }
 
-        public delegate void Apply<T>(int x, int y, T element);
+        public static ISet<T> ToSet<T>(this IEnumerable<T> enumerable)
+        {
+            return new HashSet<T>(enumerable);
+        }
+
+        public static IEnumerable<T> Apply<T>(this IEnumerable<T> enumerable, ApplyFunc<T> apply)
+        {
+            List<T> list = enumerable.ToList();
+
+            list.ForEach(element => apply(element));
+
+            return list;
+        }
+
+        public delegate void ApplyIndexedFunc<T>(int x, int y, T element);
+
+        public delegate void ApplyFunc<T>(T element);
     }
 
 }

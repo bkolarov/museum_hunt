@@ -14,6 +14,8 @@ namespace LetterTile
         public Color SelectedTextColor;
         public Sprite UnselectedBackground;
         public Color UnselectedTextColor;
+        public Sprite ErrorBackground;
+        public Color ErrorTextColor;
 
         private Text TextScriptComponent;
         private SpriteRenderer SpriteRenderer;
@@ -21,17 +23,52 @@ namespace LetterTile
         private Field PendingBindingFields = Field.NONE;
 
         private Color _TextColor;
-        private Sprite _BackgroundSprite;
         private string _Letter;
-        private bool _Selected = false;
 
         public event GameObjectClickListener OnGameObjectClick;
+
+        private bool TileActive
+        {
+            get
+            {
+                bool active;
+                switch (TileState)
+                {
+                    case State.INACTIVE:
+                        active = false;
+                        break;
+                    case State.IDLE:
+                    case State.SELECTED:
+                    case State.ERROR:
+                    default:
+                        active = true;
+                        break;
+                }
+
+                return active;
+            }
+        }
 
         public Sprite BackgroundSprite
         {
             get
             {
-                return Selected ? SelectedBackground : UnselectedBackground;
+                Sprite sprite;
+                switch (TileState)
+                {
+                    case State.SELECTED:
+                        sprite = SelectedBackground;
+                        break;
+                    case State.ERROR:
+                        sprite = ErrorBackground;
+                        break;
+                    case State.IDLE:
+                    default:
+                        sprite = UnselectedBackground;
+                        break;
+                }
+
+                return sprite;
             }
         }
 
@@ -60,21 +97,24 @@ namespace LetterTile
             }
         }
 
-        public bool Selected
+        private State _TileState;
+
+        public State TileState
         {
             get
             {
-                return _Selected;
+                return _TileState;
             }
             set
             {
-                if (_Selected != value)
+                if (_TileState != value)
                 {
-                    AddPendingBindingFlag(Field.SELECTED);
+                    _TileState = value;
+                    AddPendingBindingFlag(Field.STATE);
+                    AddPendingBindingFlag(Field.ACTIVE);
                     AddPendingBindingFlag(Field.BACKGROUND_SPRITE);
                     AddPendingBindingFlag(Field.TEXT_COLOR);
                 }
-                _Selected = value;
             }
         }
 
@@ -82,7 +122,21 @@ namespace LetterTile
         {
             get
             {
-                return Selected ? SelectedTextColor : UnselectedTextColor;
+                Color color;
+                switch (TileState)
+                {
+                    case State.SELECTED:
+                        color = SelectedTextColor;
+                        break;
+                    case State.ERROR:
+                        color = ErrorTextColor;
+                        break;
+                    case State.IDLE:
+                    default:
+                        color = UnselectedTextColor;
+                        break;
+                }
+                return color;
             }
         }
 
@@ -97,7 +151,7 @@ namespace LetterTile
 
         void Update()
         {
-            if ((PendingBindingFields & Field.LETTER) == Field.LETTER)
+            if (HasPendingBindingFor(Field.LETTER))
             {
                 if (TextScriptComponent != null)
                 {
@@ -106,22 +160,33 @@ namespace LetterTile
                 }
             }
 
-            if ((PendingBindingFields & Field.SELECTED) == Field.SELECTED)
+            if (HasPendingBindingFor(Field.STATE))
             {
-                ClearPendingBindingFlag(Field.SELECTED);
+                ClearPendingBindingFlag(Field.STATE);
             }
 
-            if ((PendingBindingFields & Field.BACKGROUND_SPRITE) == Field.BACKGROUND_SPRITE)
+            if (HasPendingBindingFor(Field.BACKGROUND_SPRITE))
             {
                 SpriteRenderer.sprite = BackgroundSprite;
                 ClearPendingBindingFlag(Field.BACKGROUND_SPRITE);
             }
 
-            if ((PendingBindingFields & Field.TEXT_COLOR) == Field.TEXT_COLOR)
+            if (HasPendingBindingFor(Field.TEXT_COLOR))
             {
                 TextScriptComponent.color = TextColor;
                 ClearPendingBindingFlag(Field.TEXT_COLOR);
             }
+
+            if (HasPendingBindingFor(Field.ACTIVE))
+            {
+                gameObject.SetActive(TileActive);
+                ClearPendingBindingFlag(Field.ACTIVE);
+            }
+        }
+
+        private bool HasPendingBindingFor(Field field)
+        {
+            return (PendingBindingFields & field) == field;
         }
 
         private void AddPendingBindingFlag(Field field)
@@ -144,9 +209,15 @@ namespace LetterTile
         {
             NONE = 0,
             LETTER = 1,
-            SELECTED = 2,
+            STATE = 2,
             BACKGROUND_SPRITE = 4,
-            TEXT_COLOR = 8
+            TEXT_COLOR = 8,
+            ACTIVE = 16
+        }
+
+        public enum State
+        {
+            IDLE, SELECTED, ERROR, INACTIVE
         }
     }
 

@@ -113,6 +113,8 @@ MonoBehaviour:
   UnselectedBackground: {fileID: 21300000, guid: 40955face117828489f58e304d44f78a,
     type: 3}
   UnselectedTextColor: {r: 0.19215687, g: 0.16470589, b: 0.14117648, a: 1}
+  ErrorBackground: {fileID: 21300000, guid: 61498b66fe9aeda49933bc17bce60ddc, type: 3}
+  ErrorTextColor: {r: 0.26666668, g: 0.03529412, b: 0.050980393, a: 1}
 --- !u!68 &6201935429720467030
 EdgeCollider2D:
   m_ObjectHideFlags: 0

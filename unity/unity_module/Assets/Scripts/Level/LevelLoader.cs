@@ -90,13 +90,18 @@ namespace Level
             var letters = GenerateLetters(pathLength);
             int maxObstacles = cells.Length - (letters.Count >= pathLength ? (letters.Count) : (pathLength));
 
-            PlaceRemainingLetters(cells, pathLength, letters);
+
             obstaclePositioner.PlaceObstacles(cells, maxObstacles);
-            emptyCellPositioner.PlaceEmptyCells(cells);
-
+            Debug.Log("After obstacles");
             cells.Print();
-            RenderContent(content, cells, letters);
+            PlaceRemainingLetters(cells, pathLength, letters);
+            Debug.Log("After letters");
+            cells.Print();
+            emptyCellPositioner.PlaceEmptyCells(cells);
+            Debug.Log("After empty");
+            cells.Print();
 
+            RenderContent(content, cells, letters);
             tilesLayout.Content = content;
 
             var letterGenerator = LetterGenerator(letters).GetEnumerator();
@@ -112,12 +117,15 @@ namespace Level
                     binding.Letter = letterGenerator.Current;
                     letterGenerator.MoveNext();
                 });
+
+            
         }
 
         private static void PlaceRemainingLetters(PathCell[,] cells, int pathLength, List<string> letters)
         {
             cells.Flatten()
                             .Where(cell => cell.CellType != PathCell.Type.LETTER)
+                            .Where(cell => cell.CellType != PathCell.Type.OBSTACLE)
                             .Take(letters.Count - pathLength)
                             .ToList()
                             .ShuffleWith(new System.Random())
@@ -178,12 +186,12 @@ namespace Level
 
     public static class TempExt
     {
-        public static void Print(this PathCell[,] cells)
+        public static void Print<T>(this T[,] cells)
         {
             var stringBuilder = new StringBuilder();
             for (int y = 0; y < cells.GetLength(1); y++)
             {
-                var l = new List<PathCell>();
+                var l = new List<T>();
                 for (int x = 0; x < cells.GetLength(0); x++)
                 {
                     l.Add(cells[x, y]);

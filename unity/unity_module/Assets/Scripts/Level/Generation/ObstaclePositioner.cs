@@ -34,13 +34,13 @@ namespace Level
             foreach (Vector2Int location in atCell.GetNeighboursLocations())
             {
                 // Make sure we don't create a dead end for the player.
-                if (inCells.Contains(location) && inCells[location.x, location.y].CellType != PathCell.Type.OBSTACLE)
+                if (inCells.Contains(location) && inCells[location.x, location.y].CellType == PathCell.Type.OBSTACLE)
                 {
-                    return true;
+                    return false;
                 }
             }
 
-            return false;
+            return true;
         }
     }
 }
