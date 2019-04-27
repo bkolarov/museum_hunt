@@ -1,5 +1,7 @@
 ﻿using LetterTile;
+using Level;
 using Level.Repository;
+using PlatformApplication;
 using PoqXert.MessageBox;
 using System;
 using System.Collections;
@@ -109,7 +111,7 @@ public class GameController : MonoBehaviour
             negativeButtonText = "Не",
             positiveCallback = id =>
             {
-                Application.Quit();
+                MobileApplication.Quit();
             },
             positiveButtonText = "Да",
             style = MsgBoxStyle.Information,
@@ -150,6 +152,7 @@ public class GameController : MonoBehaviour
     public void OnGameFinish()
     {
         Destroy(Player);
+        MobileApplication.Quit(new ResultData(FoundWords.ToArray()));
     }
 
     private void OnTileClick(LetterTileBinding binding)

@@ -5,10 +5,12 @@
       <GradleProjectSettings>
         <option name="distributionType" value="DEFAULT_WRAPPED" />
         <option name="externalProjectPath" value="$PROJECT_DIR$" />
+        <option name="gradleHome" value="G:/Program Files/Unity3d/Editor/Data/PlaybackEngines/AndroidPlayer/Tools/gradle" />
         <option name="modules">
           <set>
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/app" />
+            <option value="$PROJECT_DIR$/unity_module" />
           </set>
         </option>
         <option name="resolveModulePerSourceSet" value="false" />
