@@ -637,6 +637,12 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 364344684}
   m_CullTransparentMesh: 0
+--- !u!1 &576647176 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1111024734641556961, guid: 068217175ad913241b06bfb332e862b0,
+    type: 3}
+  m_PrefabInstance: {fileID: 3179820862639550489}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &685539023
 GameObject:
   m_ObjectHideFlags: 0
@@ -816,6 +822,7 @@ MonoBehaviour:
   BackButton: {fileID: 685539023}
   HelpButton: {fileID: 364344684}
   TextPanel: {fileID: 325922774}
+  Player: {fileID: 576647176}
 --- !u!1 &919940063
 GameObject:
   m_ObjectHideFlags: 0
@@ -1012,7 +1019,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0.5}
   m_AnchorMax: {x: 1, y: 0.5}
-  m_AnchoredPosition: {x: -59.100098, y: 0.000036001}
+  m_AnchoredPosition: {x: -59.101562, y: 0.000036001}
   m_SizeDelta: {x: 40.330017, y: 40.33002}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1217820571
@@ -1447,6 +1454,12 @@ PrefabInstance:
       propertyPath: LetterGameObject
       value: 
       objectReference: {fileID: 6918042026380163437, guid: c74bb59b051bf7c41b02b63ae61ef18a,
+        type: 3}
+    - target: {fileID: 875016598524059845, guid: 6dc947e6cb161e24c9d07814eb63472f,
+        type: 3}
+      propertyPath: FinishLine
+      value: 
+      objectReference: {fileID: 1906892069121451525, guid: 6dd502fd718baa24bb7434c70c8b3fc3,
         type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6dc947e6cb161e24c9d07814eb63472f, type: 3}

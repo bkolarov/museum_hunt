@@ -8,15 +8,19 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using UI;
 using UnityEngine;
+using UnityEngine.Events;
 using Util;
 
 public class GameController : MonoBehaviour
 {
+    private static readonly int ID_QUIT_CONFIRMATION_DIALOG = 0;
+    private static readonly int ID_HELPDIALOG = 1;
 
     public GameObject LevelRepositoryObject;
     public GameObject BackButton;
     public GameObject HelpButton;
     public GameObject TextPanel;
+    public GameObject Player;
 
     private TextPanelBinding TextPanelBinding;
 
@@ -28,6 +32,7 @@ public class GameController : MonoBehaviour
 
     private ISet<string> WordsSet;
     private int LongestWordLength;
+    private ISet<string> FoundWords = new HashSet<string>();
 
     // Start is called before the first frame update
     void Start()
@@ -56,6 +61,31 @@ public class GameController : MonoBehaviour
         LongestWordLength = (from word in hintWords
                              orderby word.Length
                              select word.Length).Last();
+
+        GameObject.FindGameObjectWithTag("Finish")
+            .GetComponent<Level.FinishLineWatcher>()
+            .OnPass.AddListener(OnGameFinish);
+
+        ShowHelpDialog();
+    }
+
+    void Update()
+    {
+        if (Input.GetKeyUp(KeyCode.Escape))
+        {
+            OnBackPressed();
+        }
+    }
+
+    protected void OnBackPressed()
+    {
+        if (MsgBox.isOpen)
+        {
+            MsgBox.Close();
+        } else
+        {
+            OnBackClick();
+        }
     }
 
     private IEnumerable<string> CreateEmpty(int size)
@@ -70,18 +100,16 @@ public class GameController : MonoBehaviour
     {
         new MsgBox.Builder
         {
-            id = 1,
+            id = ID_QUIT_CONFIRMATION_DIALOG,
             message = "Нивото няма да бъде запазено.\nСигурен/а ли сте, че искате да излезете.",
             negativeCallback = id =>
             {
-                Debug.Log("Abort exit!");
                 MsgBox.Close();
             },
             negativeButtonText = "Не",
             positiveCallback = id =>
             {
-                Debug.Log("Proceed with exit!");
-                MsgBox.Close();
+                Application.Quit();
             },
             positiveButtonText = "Да",
             style = MsgBoxStyle.Information,
@@ -93,13 +121,17 @@ public class GameController : MonoBehaviour
 
     public void OnHelpClick()
     {
+        ShowHelpDialog();
+    }
+
+    private void ShowHelpDialog()
+    {
         new MsgBox.Builder
         {
-            id = 1,
+            id = ID_HELPDIALOG,
             message = "Минете нивото, за да отключите загадка.",
             positiveCallback = id =>
             {
-                Debug.Log("Close info!");
                 MsgBox.Close();
             },
             style = MsgBoxStyle.Information,
@@ -113,6 +145,11 @@ public class GameController : MonoBehaviour
     public void OnClearClick()
     {
         ClearSelection();
+    }
+
+    public void OnGameFinish()
+    {
+        Destroy(Player);
     }
 
     private void OnTileClick(LetterTileBinding binding)
@@ -146,6 +183,7 @@ public class GameController : MonoBehaviour
                 SelectedTilesStack.Apply(tile => tile.TileState = LetterTileBinding.State.INACTIVE);
                 WordsSet.Remove(newWord);
                 ClearSelection();
+                FoundWords.Add(newWord);
                 break;
             case WordCheckResult.ERROR:
                 SelectedTilesStack.Apply(tile => tile.TileState = LetterTileBinding.State.ERROR);

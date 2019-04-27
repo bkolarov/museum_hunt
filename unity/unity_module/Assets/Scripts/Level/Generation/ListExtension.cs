@@ -1,6 +1,8 @@
 ﻿using System.Collections.Generic;
 using Random = System.Random;
 using System.Linq;
+using System.Text;
+using UnityEngine;
 
 namespace Util
 {
@@ -34,6 +36,22 @@ namespace Util
             }
         }
 
+        public static void Print<T>(this T[,] cells)
+        {
+            var stringBuilder = new StringBuilder();
+            for (int y = 0; y < cells.GetLength(1); y++)
+            {
+                var l = new List<T>();
+                for (int x = 0; x < cells.GetLength(0); x++)
+                {
+                    l.Add(cells[x, y]);
+                }
+                stringBuilder.AppendLine(string.Join(", ", l));
+            }
+
+            Debug.Log(stringBuilder.ToString());
+        }
+
         public static void ForeachIndexed<T>(this T[,] array, ApplyIndexedFunc<T> apply)
         {
             for (int x = 0; x < array.GetLength(0); x++)
@@ -62,6 +80,7 @@ namespace Util
         public delegate void ApplyIndexedFunc<T>(int x, int y, T element);
 
         public delegate void ApplyFunc<T>(T element);
+
     }
 
 }
