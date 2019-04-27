@@ -16,6 +16,7 @@ namespace Level
         public GameObject LetterGameObject;
         public GameObject ObstacleGameObject;
         public GameObject EmptyGameObject;
+        public GameObject FinishLine;
 
         public int TilesPerRow;
         public int TilesPerColumn;
@@ -31,8 +32,9 @@ namespace Level
 
             var tilesLayout = GetTilesLayout();
 
-            InitCellLetters(tilesLayout, content);
+            GenerateLevel(tilesLayout, content);
             AddSideCollisions(content);
+            AddFinishLine();
         }
 
         private void CreateCells(TilesLayout.TilesLayoutContent content)
@@ -64,20 +66,36 @@ namespace Level
 
             var colliders = GetComponents<EdgeCollider2D>();
 
-            colliders[0].points = new List<Vector2>
+            colliders[0].points = new Vector2[]
             {
                 new Vector2(-edgeHalfWidth, edgeHalfHeight),
                 new Vector2(-edgeHalfWidth, -edgeHalfHeight)
-            }.ToArray();
+            };
 
-            colliders[1].points = new List<Vector2>
+            colliders[1].points = new Vector2[]
             {
                 new Vector2(edgeHalfWidth, -edgeHalfHeight),
                 new Vector2(edgeHalfWidth, edgeHalfHeight)
-            }.ToArray();
+            };
         }
 
-        private void InitCellLetters(TilesLayout.TilesLayout tilesLayout, TilesLayout.TilesLayoutContent content)
+        private void AddFinishLine()
+        {
+            var cameraHeight = Camera.main.orthographicSize * 2;
+            var screenAspect = (float)Screen.width / Screen.height;
+            var camWidth = screenAspect * 2f * Camera.main.orthographicSize;
+            var finishLineGameObj = Instantiate(FinishLine);
+            var finishLineCollider = finishLineGameObj.GetComponent<EdgeCollider2D>();
+
+            finishLineCollider.transform.position = new Vector3(0, -cameraHeight / 2);
+            finishLineCollider.points = new Vector2[]
+            {
+                new Vector2(-camWidth / 2, 0),
+                new Vector2(camWidth / 2, 0)
+            };
+        }
+
+        private void GenerateLevel(TilesLayout.TilesLayout tilesLayout, TilesLayout.TilesLayoutContent content)
         {
             var obstaclePositioner = new ObstaclePositioner();
             var emptyCellPositioner = new EmptyCellPositioner();
@@ -90,14 +108,18 @@ namespace Level
             var letters = GenerateLetters(pathLength);
             int maxObstacles = cells.Length - (letters.Count >= pathLength ? (letters.Count) : (pathLength));
 
-            PlaceRemainingLetters(cells, pathLength, letters);
             obstaclePositioner.PlaceObstacles(cells, maxObstacles);
+            PlaceRemainingLetters(cells, pathLength, letters);
             emptyCellPositioner.PlaceEmptyCells(cells);
 
             cells.Print();
-            RenderContent(content, cells, letters);
 
-            tilesLayout.Content = content;
+            GenerateGameObjects(cells, tilesLayout, content, letters);
+        }
+
+        private void GenerateGameObjects(PathCell[,] cells, TilesLayout.TilesLayout tilesLayout, TilesLayout.TilesLayoutContent content, List<string> letters)
+        {
+            RenderContent(tilesLayout, content, cells);
 
             var letterGenerator = LetterGenerator(letters).GetEnumerator();
             letterGenerator.MoveNext();
@@ -111,20 +133,21 @@ namespace Level
                     var binding = gameObject.GetComponent(typeof(LetterTileBinding)) as LetterTileBinding;
                     binding.Letter = letterGenerator.Current;
                     letterGenerator.MoveNext();
-                });
+                });   
         }
 
         private static void PlaceRemainingLetters(PathCell[,] cells, int pathLength, List<string> letters)
         {
             cells.Flatten()
                             .Where(cell => cell.CellType != PathCell.Type.LETTER)
+                            .Where(cell => cell.CellType != PathCell.Type.OBSTACLE)
                             .Take(letters.Count - pathLength)
                             .ToList()
                             .ShuffleWith(new System.Random())
                             .ForEach(cell => cell.CellType = PathCell.Type.LETTER);
         }
 
-        private void RenderContent(TilesLayout.TilesLayoutContent content, PathCell[,] cells, List<string> letters)
+        private void RenderContent(TilesLayout.TilesLayout tilesLayout, TilesLayout.TilesLayoutContent content, PathCell[,] cells)
         {
             cells.ForeachIndexed((x, y, cell) =>
             {
@@ -144,6 +167,8 @@ namespace Level
 
                 content.Items[x, y].GameObject = tileGameObject;
             });
+
+            tilesLayout.Content = content;
         }
 
         private List<string> GenerateLetters(int pathLength)
@@ -173,25 +198,6 @@ namespace Level
             {
                 yield return letter;
             }
-        }
-    }
-
-    public static class TempExt
-    {
-        public static void Print(this PathCell[,] cells)
-        {
-            var stringBuilder = new StringBuilder();
-            for (int y = 0; y < cells.GetLength(1); y++)
-            {
-                var l = new List<PathCell>();
-                for (int x = 0; x < cells.GetLength(0); x++)
-                {
-                    l.Add(cells[x, y]);
-                }
-                stringBuilder.AppendLine(string.Join(", ", l));
-            }
-
-            Debug.Log(stringBuilder.ToString());
         }
     }
 }
