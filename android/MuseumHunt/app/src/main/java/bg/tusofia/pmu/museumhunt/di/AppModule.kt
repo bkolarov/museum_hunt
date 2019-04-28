@@ -22,8 +22,4 @@ class AppModule {
     @Provides
     @Singleton
     fun provideResourceManager(context: Context): ResourceManager = ResourceManagerImpl(context)
-
-    @Provides
-    @Singleton
-    fun provideGson() = Gson()
 }
