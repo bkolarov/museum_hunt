@@ -9,7 +9,7 @@ import dagger.android.AndroidInjector
 import javax.inject.Singleton
 
 @Singleton
-@Component(modules = [AndroidInjectionModule::class, ContributesActivityModule::class])
+@Component(modules = [AppModule::class, AndroidInjectionModule::class, ContributesActivityModule::class])
 interface AppComponent : AndroidInjector<MuseumHuntApplication> {
 
     @Component.Builder

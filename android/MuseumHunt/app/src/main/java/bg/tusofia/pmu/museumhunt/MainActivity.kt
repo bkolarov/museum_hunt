@@ -15,8 +15,7 @@ import javax.inject.Inject
 
 class MainActivity : BaseActivity<ActivityMainBinding, MainActivityViewModel>() {
 
-    @Inject
-    lateinit var viewModeFactory: ViewModelProvider.Factory
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -28,8 +27,10 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainActivityViewModel>() 
 
         startActivityForResult(intent, 1)
 
-        val viewModel = ViewModelProviders.of(this, viewModeFactory)[MainActivityViewModel::class.java]
+
     }
+
+    override fun instantiateViewModel(): MainActivityViewModel = ViewModelProviders.of(this, viewModeFactory)[MainActivityViewModel::class.java]
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
