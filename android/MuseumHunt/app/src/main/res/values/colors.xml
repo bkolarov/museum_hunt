@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#008577</color>
-    <color name="colorPrimaryDark">#00574B</color>
-    <color name="colorAccent">#D81B60</color>
+    <color name="colorPrimary">#27AE60</color>
+    <color name="colorPrimaryDark">#055626</color>
+    <color name="colorAccent">#EDF6E9</color>
+
+    <color name="colorPrimaryInGame">#00BCD4</color>
+    <color name="colorPrimaryDarkInGame">#006D75</color>
+    <color name="colorAccentInGame">#CAECFF</color>
 </resources>
