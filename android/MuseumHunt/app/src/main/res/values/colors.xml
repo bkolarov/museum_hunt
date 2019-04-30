@@ -3,6 +3,7 @@
     <color name="colorPrimary">#27AE60</color>
     <color name="colorPrimaryDark">#055626</color>
     <color name="colorAccent">#EDF6E9</color>
+    <color name="colorPrimaryTransparent">#9927AE60</color>
 
     <color name="colorPrimaryInGame">#00BCD4</color>
     <color name="colorPrimaryDarkInGame">#006D75</color>

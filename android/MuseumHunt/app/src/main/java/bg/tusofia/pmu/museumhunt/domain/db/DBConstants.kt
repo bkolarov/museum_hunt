@@ -5,4 +5,5 @@ const val DB_VERSION = 1
 
 object TableConstants {
     const val GAMES = "Games"
+    const val LEVELS = "Levels"
 }
