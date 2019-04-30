@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -8,8 +8,7 @@ namespace Level.Repository
     [Serializable]
     public class LevelData
     {
-        // "{ "HintWords": ["Pesho", "Kircho", "Mariika", "Tisho", "Cecka"] }"
-        public List<string> HintWords { get; }
+        public List<string> HintWords;
 
         public LevelData(List<string> hintWords)
         {

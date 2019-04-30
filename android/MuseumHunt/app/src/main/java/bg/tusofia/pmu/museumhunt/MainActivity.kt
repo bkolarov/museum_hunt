@@ -21,12 +21,12 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainActivityViewModel>() 
 
         binding.viewModel = viewModel
 
-        viewModel.newGameLiveEvent.observe(this, Observer {
+        viewModel.newGameLiveEvent.observe(this, Observer { unityData ->
             val intent = Intent(this, UnityPlayerActivity::class.java).apply {
-                putExtra("levelProgress-data", "{ \"HintWords\": [\"Pesho\", \"Kircho\", \"Mariika\", \"Tisho\", \"Cecka\"] }")
+                putExtra("level-data", unityData)
             }
 
-            Timber.d("new  game with name $it")
+            Timber.d("start unity with data: $unityData")
             startActivityForResult(intent, 1)
         })
 

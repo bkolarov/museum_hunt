@@ -36,6 +36,11 @@ namespace Util
             }
         }
 
+        public static void Print<T>(this List<T> list)
+        {
+            Debug.Log($"[{string.Join(", ", list)}]");
+        }
+
         public static void Print<T>(this T[,] cells)
         {
             var stringBuilder = new StringBuilder();
