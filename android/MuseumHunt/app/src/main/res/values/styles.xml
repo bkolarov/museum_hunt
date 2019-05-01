@@ -20,13 +20,21 @@
     </style>
 
     <style name="AppTheme.Button" parent="Widget.MaterialComponents.Button">
-        <item name="rippleColor">@color/colorPrimaryDark</item>
+        <item name="rippleColor">?android:colorPrimaryDark</item>
         <item name="android:background">@drawable/app_theme_button_background</item>
-        <item name="android:textColor">@color/colorPrimaryDark</item>
-        <item name="android:textSize">32sp</item>
+        <item name="android:textColor">?android:colorPrimaryDark</item>
         <item name="cornerRadius">90dp</item>
-        <item name="backgroundTint">@color/colorAccent</item>
-        <item name="strokeColor">@color/colorPrimaryDark</item>
+        <item name="backgroundTint">@android:color/white</item>
+        <item name="strokeColor">?android:colorPrimaryDark</item>
+    </style>
+
+    <style name="AppTheme.Button.Medium" parent="AppTheme.Button">
+        <item name="android:textSize">18sp</item>
+        <item name="strokeWidth">2dp</item>
+    </style>
+
+    <style name="AppTheme.Button.Large" parent="AppTheme.Button">
+        <item name="android:textSize">32sp</item>
         <item name="strokeWidth">4dp</item>
     </style>
 </resources>

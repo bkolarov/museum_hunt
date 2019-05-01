@@ -8,12 +8,11 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import bg.tusofia.pmu.museumhunt.base.activity.BaseActivity
 import bg.tusofia.pmu.museumhunt.databinding.ActivityMainBinding
+import bg.tusofia.pmu.museumhunt.ingame.IngameActivity
 import com.tusofia.pmu.bgquest.UnityPlayerActivity
 import timber.log.Timber
 
 class MainActivity : BaseActivity<ActivityMainBinding, MainActivityViewModel>() {
-
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -21,13 +20,12 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainActivityViewModel>() 
 
         binding.viewModel = viewModel
 
-        viewModel.newGameLiveEvent.observe(this, Observer { unityData ->
-            val intent = Intent(this, UnityPlayerActivity::class.java).apply {
-                putExtra(UnityPlayerActivity.KEY_LEVEL_DATA, unityData)
+        viewModel.newGameLiveEvent.observe(this, Observer { gameId ->
+            gameId?.let {
+                val intent = Intent(this, IngameActivity::class.java)
+                intent.putExtra(IngameActivity.KEY_GAME_ID, it)
+                startActivity(intent)
             }
-
-            Timber.d("start unity with data: $unityData")
-            startActivityForResult(intent, 1)
         })
 
         viewModel.continueGameLiveEvent.observe(this, Observer {
@@ -39,7 +37,8 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainActivityViewModel>() 
         })
     }
 
-    override fun instantiateViewModel(): MainActivityViewModel = ViewModelProviders.of(this, viewModeFactory)[MainActivityViewModel::class.java]
+    override fun instantiateViewModel(): MainActivityViewModel =
+        ViewModelProviders.of(this, viewModeFactory)[MainActivityViewModel::class.java]
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)

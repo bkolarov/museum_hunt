@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/ingame_navigation"
+    app:startDestination="@id/home">
+
+    <fragment
+        android:id="@+id/home"
+        android:name="bg.tusofia.pmu.museumhunt.ingame.init.IngameHomeDestinationFragment"
+        tools:layout="@layout/fragment_ingame_home_destination">
+        <action
+            android:id="@+id/action_home_to_unityLauncherFragment"
+            app:destination="@id/unityLauncherFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim" />
+        <argument
+            android:name="homeInput"
+            app:argType="bg.tusofia.pmu.museumhunt.ingame.init.IngameHomeDestinationInput" />
+    </fragment>
+    <fragment
+        android:id="@+id/riddleFragment"
+        android:name="bg.tusofia.pmu.museumhunt.ingame.riddle.RiddleFragment"
+        android:label="RiddleFragment"
+        tools:layout="@layout/fragment_riddle">
+        <action
+            android:id="@+id/action_riddleFragment_to_mapFragment"
+            app:destination="@id/mapFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim" />
+        <argument
+            android:name="levelNumber"
+            app:argType="integer" />
+    </fragment>
+    <fragment
+        android:id="@+id/unityLauncherFragment"
+        android:name="bg.tusofia.pmu.museumhunt.ingame.unity.UnityLauncherFragment"
+        android:label="UnityLauncherFragment"
+        tools:layout="@layout/fragment_unity_launcher">
+        <action
+            android:id="@+id/action_unityLauncherFragment_to_riddleFragment"
+            app:destination="@id/riddleFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim" />
+        <action
+            android:id="@+id/action_unityLauncherFragment_to_unityPlayerActivity2"
+            app:destination="@id/unityPlayerActivity" />
+        <argument
+            android:name="levelNumber"
+            app:argType="integer" />
+    </fragment>
+    <activity
+        android:id="@+id/unityPlayerActivity"
+        android:name="com.tusofia.pmu.bgquest.UnityPlayerActivity"
+        android:label="UnityPlayerActivity"
+        tools:layout="@layout/fragment_unity_launcher" />
+    <fragment android:id="@+id/mapFragment">
+        <action
+            android:id="@+id/action_mapFragment_to_gameCompletedFragment"
+            app:destination="@id/gameCompletedFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim" />
+        <action
+            android:id="@+id/action_mapFragment_pop"
+            app:destination="@+id/home"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popUpToInclusive="true" />
+        <argument
+            android:name="levelNumber"
+            app:argType="integer" />
+    </fragment>
+    <fragment android:id="@+id/gameCompletedFragment">
+        <action
+            android:id="@+id/action_gameCompletedFragment_to_placeholder"
+            app:destination="@id/home"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_enter_anim" />
+    </fragment>
+    <action
+        android:id="@+id/action_global_home"
+        app:destination="@id/home" />
+</navigation>

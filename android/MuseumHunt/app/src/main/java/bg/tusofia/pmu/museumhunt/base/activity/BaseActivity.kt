@@ -8,7 +8,8 @@ import dagger.android.AndroidInjection
 import dagger.android.support.DaggerAppCompatActivity
 import javax.inject.Inject
 
-abstract class BaseActivity<BindingT : ViewDataBinding, ViewModelT : BaseViewModel> : DaggerAppCompatActivity() {
+abstract class BaseActivity<BindingT : ViewDataBinding, ViewModelT : BaseViewModel>
+    : DaggerAppCompatActivity() {
 
     @Inject
     lateinit var viewModeFactory: ViewModelProvider.Factory
@@ -26,7 +27,7 @@ abstract class BaseActivity<BindingT : ViewDataBinding, ViewModelT : BaseViewMod
 
     abstract fun instantiateViewModel(): ViewModelT
 
-    open fun performInjection() {
+    protected open fun performInjection() {
         AndroidInjection.inject(this)
     }
 

@@ -10,6 +10,8 @@ interface GameRepository {
     fun getGames(): Single<List<Game>>
 
     fun addGame(game: Game): Completable
+
+    fun getGameById(gameId: Int): Single<Game?>
 }
 
 class GameRepositoryImpl(private val gameDao: GameDao) : GameRepository {
@@ -22,4 +24,5 @@ class GameRepositoryImpl(private val gameDao: GameDao) : GameRepository {
 
     override fun addGame(game: Game) = gameDao.insertNewGame(game).subscribeOn(Schedulers.io())
 
+    override fun getGameById(gameId: Int): Single<Game?> = gameDao.getGameById(gameId).subscribeOn(Schedulers.io())
 }
