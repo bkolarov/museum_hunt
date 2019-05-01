@@ -2,25 +2,21 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Util;
 
 namespace Level.Repository
 {
     public class LevelDataRepository : MonoBehaviour
     {
+        private ILevelDataSource DataSource;
+
         private LevelData LevelData;
 
         // Start is called before the first frame update
         void Start()
         {
-            var words = new List<string>
-            {
-                "Pesho",
-                "Mariika",
-                "Kircho",
-                "Tisho",
-                "Cecka"
-            };
-            LevelData = new LevelData(words);
+            DataSource = LevelDataSourceFacstory.GetLevelDataSource();
+            LevelData = DataSource.GetLevelData();
         }
 
         public LevelData GetLevelData()
@@ -48,22 +44,16 @@ namespace Level.Repository
                     throw new InvalidOperationException("Platform not supported.");
             }
         }
+    }
 
-        public class MockLevelDataSource : ILevelDataSource
+    internal class MockLevelDataSource : ILevelDataSource
+    {
+        public LevelData GetLevelData()
         {
-            public LevelData GetLevelData()
-            {
-                var words = new List<string>
-                {
-                    "Pesho",
-                    "Mariika",
-                    "Kircho",
-                    "Tisho",
-                    "Cecka"
-                };
-                
-                return new LevelData(words);
-            }
+            LevelData levelData = JsonUtility.FromJson<LevelData>("{\"HintWords\":[\"бозайник\",\"фосил\",\"минерал\",\"биология\",\"природа\"]}");
+            levelData.HintWords.Print();
+
+            return levelData;
         }
     }
 
@@ -76,23 +66,27 @@ namespace Level.Repository
             var UnityPlayer = new AndroidJavaClass("com.unity3d.player.UnityPlayer");
             var currentActivity = UnityPlayer.GetStatic<AndroidJavaObject>("currentActivity");
 
-            var intent = currentActivity.Call<AndroidJavaObject>("getIntent");
-            var extras = intent.Call<AndroidJavaObject>("getExtras");
-            var hasExtra = intent.Call<bool>("hasExtra", KEY_LEVEL_DATA);
+            Debug.Log($"current activity instance: {currentActivity.Call<AndroidJavaObject>("getClass").Call<string>("getName")}");
 
-            if (!hasExtra)
+            var intent = currentActivity.Call<AndroidJavaObject>("getIntent");
+
+            Debug.Log($"obtained intent: {intent}");
+
+            var levelDataJson = intent.Call<string>("getStringExtra", KEY_LEVEL_DATA);
+
+            Debug.Log($"obtained level data: {levelDataJson}");
+
+            if (levelDataJson == null)
             {
                 throw new ReadAndroidDataException();
             }
-
-            var levelDataJson = extras.Call<string>("getString", KEY_LEVEL_DATA);
 
             return JsonUtility.FromJson<LevelData>(levelDataJson);
         }
 
         private class ReadAndroidDataException : System.Exception
         {
-            public ReadAndroidDataException() : base($"Level data json is invalid or not provided as string extra with key: {KEY_LEVEL_DATA}") {}
+            public ReadAndroidDataException() : base($"Level data json is invalid or not provided as string extra with key: {KEY_LEVEL_DATA}") { }
         }
     }
 }

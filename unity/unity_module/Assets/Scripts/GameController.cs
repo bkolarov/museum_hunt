@@ -1,4 +1,4 @@
-﻿using LetterTile;
+using LetterTile;
 using Level;
 using Level.Repository;
 using PlatformApplication;

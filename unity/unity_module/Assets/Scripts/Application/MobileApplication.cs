@@ -33,13 +33,7 @@ namespace PlatformApplication
 
             var resultJson = JsonUtility.ToJson(result, true);
 
-            AndroidJavaClass intent = null;
-            if (result != null)
-            {
-                currentActivity.Call("finishWithResult", resultJson);
-            }
-
-            UnityEngine.Application.Quit();
+            currentActivity.Call("finishWithResult", resultJson);
         }
     }
 

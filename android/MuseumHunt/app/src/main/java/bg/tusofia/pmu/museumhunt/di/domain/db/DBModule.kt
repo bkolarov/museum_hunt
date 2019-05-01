@@ -6,10 +6,12 @@ import bg.tusofia.pmu.museumhunt.domain.db.DB_NAME
 import bg.tusofia.pmu.museumhunt.domain.db.MuseumHuntRoomDB
 import dagger.Module
 import dagger.Provides
+import javax.inject.Singleton
 
 @Module
 class DBModule {
 
+    @Singleton
     @Provides
     fun provideRoomDB(context: Context) =
         Room.databaseBuilder(
@@ -18,5 +20,9 @@ class DBModule {
             DB_NAME
         )
             .build()
+
+    @Singleton
+    @Provides
+    fun provideGameDao(museumHuntRoomDB: MuseumHuntRoomDB) = museumHuntRoomDB.gameDao()
 
 }

@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="level_1_riddle">Кой е най-старият музей в България?</string>
+    <string-array name="level_1_obstacle_hints">
+        <item>бозайник</item>
+        <item>фосил</item>
+        <item>минерал</item>
+        <item>биология</item>
+        <item>природа</item>
+    </string-array>
+    <string-array name="level_1_riddle_answers">
+        <item>Музей по палеонтология и исторична геология</item>
+        <item>Музей на съвременното изкуство</item>
+        <item>Национален природонаучен музей при БАН</item>
+        <item>Регионален исторически музей – София</item>
+    </string-array>
+
+    <string name="level_2_riddle">В кой софийски музей входът е безплатен всеки последен понеделник от месец?</string>
+    <string-array name="level_2_obstacle_hints">
+        <item>история</item>
+        <item>софия</item>
+        <item>панагюрище</item>
+        <item>съкровище</item>
+    </string-array>
+    <string-array name="level_2_riddle_answers">
+        <item>Национален исторически музей</item>
+        <item>Национален етнографски музей</item>
+        <item>Национален антропологичен музей</item>
+        <item>Национален музей „Боянска църква”</item>
+    </string-array>
+
+    <string name="level_3_riddle">В кой музей са изложени екипите на Албена Денкова и Максим Ставийски от световното първенство по фигурно пързаляне във Вашингтон (САЩ)?</string>
+    <string-array name="level_3_obstacle_hints">
+        <item>физическа</item>
+        <item>култура</item>
+        <item>стоичков</item>
+        <item>медал</item>
+    </string-array>
+    <string-array name="level_3_riddle_answers">
+        <item>Музей на съвременното изкуство</item>
+        <item>Музей по история на физиката в България</item>
+        <item>Музей на спорта</item>
+        <item>Музей на социалистическото изкуство</item>
+    </string-array>
+
+</resources>

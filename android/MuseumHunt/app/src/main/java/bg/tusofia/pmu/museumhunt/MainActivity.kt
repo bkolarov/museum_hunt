@@ -4,14 +4,12 @@ import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import androidx.databinding.DataBindingUtil
-import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import bg.tusofia.pmu.museumhunt.base.activity.BaseActivity
 import bg.tusofia.pmu.museumhunt.databinding.ActivityMainBinding
-import bg.tusofia.pmu.museumhunt.di.viewmodel.factory.ViewModelProviderFactory
 import com.tusofia.pmu.bgquest.UnityPlayerActivity
 import timber.log.Timber
-import javax.inject.Inject
 
 class MainActivity : BaseActivity<ActivityMainBinding, MainActivityViewModel>() {
 
@@ -19,15 +17,26 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainActivityViewModel>() 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        DataBindingUtil.setContentView<ActivityMainBinding>(this, R.layout.activity_main)
+        val binding = DataBindingUtil.setContentView<ActivityMainBinding>(this, R.layout.activity_main)
 
-        val intent = Intent(this, UnityPlayerActivity::class.java).apply {
-            putExtra("level-data", "{ \"HintWords\": [\"Pesho\", \"Kircho\", \"Mariika\", \"Tisho\", \"Cecka\"] }")
-        }
+        binding.viewModel = viewModel
 
-        startActivityForResult(intent, 1)
+        viewModel.newGameLiveEvent.observe(this, Observer { unityData ->
+            val intent = Intent(this, UnityPlayerActivity::class.java).apply {
+                putExtra(UnityPlayerActivity.KEY_LEVEL_DATA, unityData)
+            }
 
+            Timber.d("start unity with data: $unityData")
+            startActivityForResult(intent, 1)
+        })
 
+        viewModel.continueGameLiveEvent.observe(this, Observer {
+
+        })
+
+        viewModel.browseGamesLiveEvent.observe(this, Observer {
+
+        })
     }
 
     override fun instantiateViewModel(): MainActivityViewModel = ViewModelProviders.of(this, viewModeFactory)[MainActivityViewModel::class.java]
@@ -36,7 +45,7 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainActivityViewModel>() 
         super.onActivityResult(requestCode, resultCode, data)
 
         if (resultCode == Activity.RESULT_OK) {
-            val result = data?.getStringExtra("UNITY_RESULT") ?: ""
+            val result = data?.getStringExtra(UnityPlayerActivity.KEY_UNITY_RESULT) ?: ""
             Timber.d(result)
         }
     }

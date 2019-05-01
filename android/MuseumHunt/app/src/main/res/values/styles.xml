@@ -1,8 +1,10 @@
 <resources>
 
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+    <style name="AppTheme" parent="Theme.MaterialComponents.NoActionBar" >
+        <item name="android:windowTranslucentStatus">true</item>
     </style>
+
     <style name="AppTheme.Default" parent="AppTheme">
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
@@ -10,11 +12,21 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
-
     <style name="AppTheme.InGame" parent="AppTheme">
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimaryInGame</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDarkInGame</item>
         <item name="colorAccent">@color/colorAccentInGame</item>
+    </style>
+
+    <style name="AppTheme.Button" parent="Widget.MaterialComponents.Button">
+        <item name="rippleColor">@color/colorPrimaryDark</item>
+        <item name="android:background">@drawable/app_theme_button_background</item>
+        <item name="android:textColor">@color/colorPrimaryDark</item>
+        <item name="android:textSize">32sp</item>
+        <item name="cornerRadius">90dp</item>
+        <item name="backgroundTint">@color/colorAccent</item>
+        <item name="strokeColor">@color/colorPrimaryDark</item>
+        <item name="strokeWidth">4dp</item>
     </style>
 </resources>
