@@ -1,19 +1,20 @@
 package com.tusofia.pmu.bgquest;
 
-import com.unity3d.player.*;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.res.Configuration;
-import android.graphics.PixelFormat;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
-import android.view.View;
 import android.view.Window;
-import android.view.WindowManager;
+import com.unity3d.player.UnityPlayer;
 
 public class UnityPlayerActivity extends Activity
 {
+    public static final String KEY_UNITY_RESULT = "UNITY_RESULT";
+    public static final String KEY_LEVEL_DATA = "level-data";
+
     protected UnityPlayer mUnityPlayer; // don't change the name of this variable; referenced from native code
 
     // Setup activity layout
@@ -27,10 +28,17 @@ public class UnityPlayerActivity extends Activity
         mUnityPlayer.requestFocus();
     }
 
+    // Do not remove this. It's called from native code
     public void finishWithResult(String result) {
         Intent data = new Intent();
-        data.putExtra("UNITY_RESULT", result);
-        setResult(RESULT_OK, data);
+
+        if (TextUtils.isEmpty(result)) {
+            setResult(RESULT_CANCELED);
+        } else {
+            data.putExtra(KEY_UNITY_RESULT, result);
+            setResult(RESULT_OK, data);
+        }
+
         finish();
     }
 

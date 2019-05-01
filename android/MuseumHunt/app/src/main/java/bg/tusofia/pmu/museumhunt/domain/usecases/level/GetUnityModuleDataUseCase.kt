@@ -10,7 +10,7 @@ class GetUnityModuleDataUseCase @Inject constructor(private val getLevelDataUseC
     fun getUnityModuleData(levelNum: Int) = getLevelDataUseCase.getLevelData(levelNum)
         .observeOn(Schedulers.computation())
         .map {
-            gson.toJson(UnityModuleData(it.hintWords))
+            gson.toJson(UnityModuleData(it.stageObstacle.hintWords))
         }
 
 }

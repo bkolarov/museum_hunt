@@ -1,5 +1,6 @@
 package bg.tusofia.pmu.museumhunt.di.domain.repository
 
+import bg.tusofia.pmu.museumhunt.base.resources.ResourceManager
 import bg.tusofia.pmu.museumhunt.domain.db.dao.GameDao
 import bg.tusofia.pmu.museumhunt.domain.repository.GameRepository
 import bg.tusofia.pmu.museumhunt.domain.repository.GameRepositoryImpl
@@ -18,6 +19,6 @@ class RepositoryModule {
 
     @Provides
     @Singleton
-    fun provideLevelDataRepository(): LevelDataRepository = LevelDataRepositoryImpl()
+    fun provideLevelDataRepository(resourceManager: ResourceManager): LevelDataRepository = LevelDataRepositoryImpl(resourceManager)
 
 }

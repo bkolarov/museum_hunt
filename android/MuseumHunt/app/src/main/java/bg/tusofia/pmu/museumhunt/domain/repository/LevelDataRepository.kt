@@ -1,5 +1,7 @@
 package bg.tusofia.pmu.museumhunt.domain.repository
 
+import bg.tusofia.pmu.museumhunt.R
+import bg.tusofia.pmu.museumhunt.base.resources.ResourceManager
 import io.reactivex.Single
 
 interface LevelDataRepository {
@@ -8,46 +10,57 @@ interface LevelDataRepository {
 
 }
 
-class LevelDataRepositoryImpl : LevelDataRepository {
+class LevelDataRepositoryImpl(private val resourceManager: ResourceManager) : LevelDataRepository {
 
     override fun getLevelData(levelNum: Int): Single<LevelData> {
         return try {
+            val level1Answers = resourceManager.getStringArray(R.array.level_1_riddle_answers)
+            val level2Answers = resourceManager.getStringArray(R.array.level_2_riddle_answers)
+            val level3Answers = resourceManager.getStringArray(R.array.level_3_riddle_answers)
+
             val levelData = when (levelNum) {
                 0 -> LevelData(
-                    hintWords = listOf("бозайник", "фосил", "минерал", "биология", "природа"),
-                    riddle = "Кой е най-старият музей в България?",
-                    riddleAnswers = listOf(
-                        "Музей по палеонтология и исторична геология",
-                        " Музей на съвременното изкуство",
-                        "Национален природонаучен музей при БАН",
-                        "Регионален исторически музей – София"
+                    stageObstacle = StageObstacle(resourceManager.getStringArray(R.array.level_1_obstacle_hints).toList()),
+                    stageRiddle = StageRiddle(
+                        riddle = resourceManager.getString(R.string.level_1_riddle),
+                        answers = listOf(
+                            Answer(level1Answers[0]),
+                            Answer(level1Answers[1]),
+                            Answer(answer = level1Answers[2], isCorrect = true),
+                            Answer(level1Answers[3])
+                        )
                     ),
-                    location = LocationCoordinates(42.6558745, 23.2654635)
+                    stageLocation = StageLocation(LocationCoordinates(42.6558745, 23.2654635))
                 )
                 1 -> LevelData(
-                    hintWords = listOf("история", "софия", "панагюрско", "съкровище"),
-                    riddle = "В кой софийски музей входът е безплатен всеки последен понеделник от месец?",
-                    riddleAnswers = listOf(
-                        "Национален исторически музей",
-                        "Национален етнографски музей",
-                        "Национален антропологичен музей",
-                        "Национален музей „Боянска църква”"
+                    stageObstacle = StageObstacle(resourceManager.getStringArray(R.array.level_2_obstacle_hints).toList()),
+                    stageRiddle = StageRiddle(
+                        riddle = resourceManager.getString(R.string.level_2_riddle),
+                        answers = listOf(
+                            Answer(answer = level2Answers[0], isCorrect = true),
+                            Answer(level2Answers[1]),
+                            Answer(level2Answers[2]),
+                            Answer(level2Answers[3])
+                        )
                     ),
-                    location = LocationCoordinates(42.6955959, 23.3262678)
+                    stageLocation = StageLocation(LocationCoordinates(42.6552672, 23.2687588))
                 )
                 2 -> LevelData(
-                    hintWords = listOf("физическа", "култура", "стоичков", "медал"),
-                    riddle = "В кой музей са изложени екипите на Албена Денкова и Максим Ставийски от световното първенство по фигурно пързаляне във Вашингтон (САЩ)?",
-                    riddleAnswers = listOf(
-                        "Музей на съвременното изкуство",
-                        "Музей по история на физиката в България",
-                        "Музей на спорта",
-                        "Музей на социалистическото изкуство"
+                    stageObstacle = StageObstacle(resourceManager.getStringArray(R.array.level_3_obstacle_hints).toList()),
+                    stageRiddle = StageRiddle(
+                        riddle = resourceManager.getString(R.string.level_3_riddle),
+                        answers = listOf(
+                            Answer(level3Answers[0]),
+                            Answer(level3Answers[1]),
+                            Answer(answer = level3Answers[2], isCorrect = true),
+                            Answer(level3Answers[3])
+                        )
                     ),
-                    location = LocationCoordinates(42.687435, 23.335202)
+                    stageLocation = StageLocation(LocationCoordinates(42.687435, 23.335202))
                 )
                 else -> throw IllegalStateException("Wrong number level")
             }
+
             Single.just(levelData)
         } catch (e: Exception) {
             Single.error<LevelData>(e)
@@ -56,10 +69,17 @@ class LevelDataRepositoryImpl : LevelDataRepository {
 }
 
 data class LevelData(
-    val hintWords: List<String>,
-    val riddle: String,
-    val riddleAnswers: List<String>,
-    val location: LocationCoordinates
+    val stageObstacle: StageObstacle,
+    val stageRiddle: StageRiddle,
+    val stageLocation: StageLocation
 )
+
+data class StageObstacle(val hintWords: List<String>)
+
+data class StageRiddle(val riddle: String, val answers: List<Answer>)
+
+data class Answer(val answer: String, val isCorrect: Boolean = false)
+
+data class StageLocation(val locationCoordinates: LocationCoordinates)
 
 data class LocationCoordinates(val longitude: Double, val latitude: Double)

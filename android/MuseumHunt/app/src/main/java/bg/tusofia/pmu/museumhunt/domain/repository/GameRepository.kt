@@ -17,7 +17,6 @@ class GameRepositoryImpl(private val gameDao: GameDao) : GameRepository {
     override fun getGames(): Single<List<Game>> {
         return gameDao.getAllGames()
             .subscribeOn(Schedulers.io())
-            .cache()
             .first(listOf())
     }
 

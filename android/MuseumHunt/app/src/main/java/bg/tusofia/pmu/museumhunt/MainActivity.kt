@@ -23,7 +23,7 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainActivityViewModel>() 
 
         viewModel.newGameLiveEvent.observe(this, Observer { unityData ->
             val intent = Intent(this, UnityPlayerActivity::class.java).apply {
-                putExtra("level-data", unityData)
+                putExtra(UnityPlayerActivity.KEY_LEVEL_DATA, unityData)
             }
 
             Timber.d("start unity with data: $unityData")
@@ -45,7 +45,7 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainActivityViewModel>() 
         super.onActivityResult(requestCode, resultCode, data)
 
         if (resultCode == Activity.RESULT_OK) {
-            val result = data?.getStringExtra("UNITY_RESULT") ?: ""
+            val result = data?.getStringExtra(UnityPlayerActivity.KEY_UNITY_RESULT) ?: ""
             Timber.d(result)
         }
     }
