@@ -13,7 +13,10 @@
             android:id="@+id/action_home_to_unityLauncherFragment"
             app:destination="@id/unityLauncherFragment"
             app:enterAnim="@anim/nav_default_enter_anim"
-            app:exitAnim="@anim/nav_default_exit_anim" />
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:launchSingleTop="true"
+            app:popUpTo="@+id/home"
+            app:popUpToInclusive="true" />
         <argument
             android:name="homeInput"
             app:argType="bg.tusofia.pmu.museumhunt.ingame.init.IngameHomeDestinationInput" />
@@ -27,10 +30,11 @@
             android:id="@+id/action_riddleFragment_to_mapFragment"
             app:destination="@id/mapFragment"
             app:enterAnim="@anim/nav_default_enter_anim"
-            app:exitAnim="@anim/nav_default_exit_anim" />
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:launchSingleTop="true" />
         <argument
-            android:name="levelNumber"
-            app:argType="integer" />
+            android:name="levelId"
+            app:argType="long" />
     </fragment>
     <fragment
         android:id="@+id/unityLauncherFragment"
@@ -41,41 +45,37 @@
             android:id="@+id/action_unityLauncherFragment_to_riddleFragment"
             app:destination="@id/riddleFragment"
             app:enterAnim="@anim/nav_default_enter_anim"
-            app:exitAnim="@anim/nav_default_exit_anim" />
-        <action
-            android:id="@+id/action_unityLauncherFragment_to_unityPlayerActivity2"
-            app:destination="@id/unityPlayerActivity" />
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:launchSingleTop="true" />
         <argument
-            android:name="levelNumber"
-            app:argType="integer" />
+            android:name="levelId"
+            app:argType="long" />
     </fragment>
-    <activity
-        android:id="@+id/unityPlayerActivity"
-        android:name="com.tusofia.pmu.bgquest.UnityPlayerActivity"
-        android:label="UnityPlayerActivity"
-        tools:layout="@layout/fragment_unity_launcher" />
     <fragment android:id="@+id/mapFragment">
         <action
             android:id="@+id/action_mapFragment_to_gameCompletedFragment"
             app:destination="@id/gameCompletedFragment"
             app:enterAnim="@anim/nav_default_enter_anim"
-            app:exitAnim="@anim/nav_default_exit_anim" />
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:launchSingleTop="true" />
         <action
             android:id="@+id/action_mapFragment_pop"
             app:destination="@+id/home"
             app:enterAnim="@anim/nav_default_enter_anim"
             app:exitAnim="@anim/nav_default_exit_anim"
+            app:launchSingleTop="true"
             app:popUpToInclusive="true" />
         <argument
-            android:name="levelNumber"
-            app:argType="integer" />
+            android:name="levelId"
+            app:argType="long" />
     </fragment>
     <fragment android:id="@+id/gameCompletedFragment">
         <action
             android:id="@+id/action_gameCompletedFragment_to_placeholder"
             app:destination="@id/home"
             app:enterAnim="@anim/nav_default_enter_anim"
-            app:exitAnim="@anim/nav_default_enter_anim" />
+            app:exitAnim="@anim/nav_default_enter_anim"
+            app:launchSingleTop="true" />
     </fragment>
     <action
         android:id="@+id/action_global_home"

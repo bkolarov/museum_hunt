@@ -22,7 +22,7 @@ class IngameActivity : BaseActivity<ActivityIngameBinding, IngameViewModel>() {
         val navController = findNavController(R.id.nav_host_fragment)
 
         navController.setGraph(R.navigation.ingame_navigation, Bundle().apply {
-            putParcelable("homeInput", IngameHomeDestinationInput(getInt(KEY_GAME_ID)))
+            putParcelable("homeInput", IngameHomeDestinationInput(intent.getLongExtra(KEY_GAME_ID, 0)))
         })
     }
 

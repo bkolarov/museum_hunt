@@ -8,11 +8,10 @@ import bg.tusofia.pmu.museumhunt.base.resources.ResourceManager
 import bg.tusofia.pmu.museumhunt.base.viewmodel.BaseViewModel
 import bg.tusofia.pmu.museumhunt.domain.db.entity.Game
 import bg.tusofia.pmu.museumhunt.domain.usecases.game.CreateGameUserCase
-import bg.tusofia.pmu.museumhunt.domain.usecases.game.GetGameByNameUseCase
+import bg.tusofia.pmu.museumhunt.domain.usecases.game.GetGamesSortedByDateUseCase
 import bg.tusofia.pmu.museumhunt.domain.usecases.game.GetGamesUseCase
 import bg.tusofia.pmu.museumhunt.util.displayDateFormat
 import bg.tusofia.pmu.museumhunt.util.rx.addTo
-import bg.tusofia.pmu.museumhunt.util.rx.toSingle
 import com.hadilq.liveevent.LiveEvent
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.functions.Consumer
@@ -25,14 +24,14 @@ class MainActivityViewModel @Inject constructor(
     resourceManager: ResourceManager,
     private val getGamesUseCase: GetGamesUseCase,
     private val createGameUserCase: CreateGameUserCase,
-    private val getGameByNameUseCase: GetGameByNameUseCase
+    private val getGamesSortedByDateUseCase: GetGamesSortedByDateUseCase
 ) : BaseViewModel(resourceManager) {
 
-    private val _newGameEvent = LiveEvent<Int>()
+    private val _newGameEvent = LiveEvent<Long>()
     private val _continueGameEvent = LiveEvent<Unit>()
     private val _browseGamesEvent = LiveEvent<Unit>()
 
-    val newGameLiveEvent: LiveData<Int> = _newGameEvent
+    val newGameLiveEvent: LiveData<Long> = _newGameEvent
     val continueGameLiveEvent: LiveData<Unit> = _continueGameEvent
     val browseGamesLiveEvent: LiveData<Unit> = _browseGamesEvent
 
@@ -61,9 +60,11 @@ class MainActivityViewModel @Inject constructor(
         createGameUserCase
             .createGame(gameName)
             .observeOn(Schedulers.computation())
-            .toSingle()
             .flatMap {
-                getGameByNameUseCase.getGameByName(gameName)
+                getGamesSortedByDateUseCase.getGamesSortedByDate()
+            }
+            .map {
+                it[0]
             }
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(Consumer {

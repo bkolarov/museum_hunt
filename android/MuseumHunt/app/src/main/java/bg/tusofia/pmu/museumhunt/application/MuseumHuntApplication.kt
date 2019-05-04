@@ -4,7 +4,6 @@ import bg.tusofia.pmu.museumhunt.di.AppComponent
 import bg.tusofia.pmu.museumhunt.di.DaggerAppComponent
 import dagger.android.AndroidInjector
 import dagger.android.DaggerApplication
-import io.reactivex.plugins.RxJavaPlugins
 import timber.log.Timber
 
 class MuseumHuntApplication : DaggerApplication() {
@@ -16,9 +15,9 @@ class MuseumHuntApplication : DaggerApplication() {
 
         Timber.plant(Timber.DebugTree())
 
-        RxJavaPlugins.setErrorHandler {
-            Timber.e(it)
-        }
+//        RxJavaPlugins.setErrorHandler {
+//            Timber.e(it)
+//        }
     }
 
     override fun applicationInjector(): AndroidInjector<MuseumHuntApplication> {

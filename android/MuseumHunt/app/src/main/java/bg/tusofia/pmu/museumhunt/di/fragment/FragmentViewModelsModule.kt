@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import bg.tusofia.pmu.museumhunt.di.viewmodel.annotation.ViewModelKey
 import bg.tusofia.pmu.museumhunt.ingame.init.IngameHomeDestinationViewModel
 import bg.tusofia.pmu.museumhunt.ingame.riddle.RiddleViewModel
+import bg.tusofia.pmu.museumhunt.ingame.unity.UnityLauncherViewModel
 import dagger.Binds
 import dagger.Module
 import dagger.multibindings.IntoMap
@@ -22,5 +23,8 @@ abstract class FragmentViewModelsModule {
     abstract fun bindIngameHomeDestinationViewModel(viewModel: IngameHomeDestinationViewModel): ViewModel
 
 
-
+    @Binds
+    @IntoMap
+    @ViewModelKey(UnityLauncherViewModel::class)
+    abstract fun bindUnityLauncherViewModel(viewModel: UnityLauncherViewModel): ViewModel
 }
