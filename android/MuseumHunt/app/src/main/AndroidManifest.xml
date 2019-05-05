@@ -26,6 +26,7 @@
         android:name="android.hardware.touchscreen.multitouch.distinct"
         android:required="false" />
 
+    <uses-permission android:name="android.permission.VIBRATE" />
     <application
         android:name=".application.MuseumHuntApplication"
         android:allowBackup="true"

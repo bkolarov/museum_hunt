@@ -12,6 +12,7 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import bg.tusofia.pmu.museumhunt.base.fragment.BaseFragment
+import bg.tusofia.pmu.museumhunt.base.fragment.finishOnBackPressed
 import com.tusofia.pmu.bgquest.UnityPlayerActivity
 import timber.log.Timber
 
@@ -30,6 +31,8 @@ class UnityLauncherFragment : BaseFragment<ViewDataBinding, UnityLauncherViewMod
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        finishOnBackPressed()
+
         viewModel.launchUnityModuleLiveEvent.observe(viewLifecycleOwner, Observer { unityData ->
             val intent = Intent(context, UnityPlayerActivity::class.java).apply {
                 putExtra(UnityPlayerActivity.KEY_LEVEL_DATA, unityData)
@@ -40,7 +43,7 @@ class UnityLauncherFragment : BaseFragment<ViewDataBinding, UnityLauncherViewMod
         })
 
         viewModel.goBackEvent.observe(viewLifecycleOwner, Observer {
-            requireActivity().onBackPressed()
+            activity?.finish()
         })
 
         viewModel.openRiddleScreenEvent.observe(viewLifecycleOwner, Observer {

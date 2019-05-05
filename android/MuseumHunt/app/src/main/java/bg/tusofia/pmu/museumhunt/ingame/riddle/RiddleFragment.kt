@@ -1,5 +1,6 @@
 package bg.tusofia.pmu.museumhunt.ingame.riddle
 
+import android.app.AlertDialog
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -10,7 +11,9 @@ import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import bg.tusofia.pmu.museumhunt.R
 import bg.tusofia.pmu.museumhunt.base.fragment.BaseFragment
+import bg.tusofia.pmu.museumhunt.base.fragment.finishOnBackPressed
 import bg.tusofia.pmu.museumhunt.databinding.FragmentRiddleBinding
+import com.google.android.material.snackbar.Snackbar
 
 class RiddleFragment : BaseFragment<FragmentRiddleBinding, RiddleViewModel>() {
 
@@ -23,11 +26,34 @@ class RiddleFragment : BaseFragment<FragmentRiddleBinding, RiddleViewModel>() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        finishOnBackPressed()
+
         val answersAdapter = AnswersAdapter(Observer {
             viewModel.onAnswerClick(it)
         })
 
         viewModel.answersEvent.observe(viewLifecycleOwner, answersAdapter)
+
+        viewModel.goBackEvent.observe(viewLifecycleOwner, Observer {
+            activity?.finish()
+        })
+
+        viewModel.errorSnackBarEvent.observe(viewLifecycleOwner, Observer {
+            Snackbar.make(view, getString(R.string.riddle_answer_error), Snackbar.LENGTH_LONG)
+                .show()
+        })
+
+        viewModel.showDialogEvent.observe(viewLifecycleOwner, Observer {
+            AlertDialog.Builder(context, R.style.AppTheme_Dialog_InGame)
+                .setTitle(it.title)
+                .setMessage(it.message)
+                .setPositiveButton(it.positiveBtnTxt) { _, _ -> it.positiveBtnCallback }
+                .show()
+        })
+
+        viewModel.nextScreenEevent.observe(viewLifecycleOwner, Observer {
+
+        })
 
         binding { vm ->
             viewModel = vm
@@ -51,14 +77,10 @@ class RiddleFragment : BaseFragment<FragmentRiddleBinding, RiddleViewModel>() {
             rvAnswers.adapter = answersAdapter
         }
 
-        viewModel.goBackEvent.observe(viewLifecycleOwner, Observer {
-            requireActivity().onBackPressed()
-        })
-
         viewModel.init(input.levelId)
     }
 
     override fun instantiateViewModel(): RiddleViewModel =
-            ViewModelProviders.of(this, viewModelFactory)[RiddleViewModel::class.java]
+        ViewModelProviders.of(this, viewModelFactory)[RiddleViewModel::class.java]
 
 }
