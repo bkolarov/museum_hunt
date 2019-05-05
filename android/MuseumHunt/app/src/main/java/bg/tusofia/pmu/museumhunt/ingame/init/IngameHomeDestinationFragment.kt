@@ -25,7 +25,11 @@ class IngameHomeDestinationFragment : BaseFragment<FragmentIngameHomeDestination
         super.onViewCreated(view, savedInstanceState)
 
         viewModel.openUnityModuleEvent.observe(viewLifecycleOwner, Observer {
-            findNavController().navigate(IngameHomeDestinationFragmentDirections.actionHomeToUnityLauncherFragment(it.levelId))
+//            findNavController().navigate(IngameHomeDestinationFragmentDirections.actionHomeToUnityLauncherFragment(it.levelId))
+        })
+
+        viewModel.openRiddleScreenEvent.observe(viewLifecycleOwner, Observer {
+            findNavController().navigate(IngameHomeDestinationFragmentDirections.actionHomeToRiddleFragment(it.levelId))
         })
 
         viewModel.decideAction(input.homeInput.gameId)

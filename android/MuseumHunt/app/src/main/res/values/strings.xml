@@ -4,4 +4,5 @@
     <string name="main_activity_continue">Продължи</string>
     <string name="default_error_dialog_message">Опа! Нещо не е наред. Моля опитайте отново.</string>
     <string name="ok">Добре</string>
+    <string name="menu_toolbar_help">Помощ</string>
 </resources>

@@ -16,7 +16,7 @@ class IngameHomeDestinationViewModel @Inject constructor(
 ) : BaseViewModel(resourceManager) {
 
     val openUnityModuleEvent: LiveData<NextScreenArgs> = decideNextScreenByLevelUseCase.openUnityModuleEvent
-    val openRiddleScreenEvent: LiveData<NextScreenArgs> = decideNextScreenByLevelUseCase.openRiddleScreenEvent
+    val openRiddleScreenEvent: LiveData<NextScreenArgs> = decideNextScreenByLevelUseCase.openUnityModuleEvent
 
     fun decideAction(gameId: Long) {
         decideNextScreenByLevelUseCase.decideNextScreen(gameId)

@@ -9,6 +9,7 @@ import bg.tusofia.pmu.museumhunt.base.activity.BaseActivity
 import bg.tusofia.pmu.museumhunt.databinding.ActivityIngameBinding
 import bg.tusofia.pmu.museumhunt.ingame.init.IngameHomeDestinationInput
 
+
 class IngameActivity : BaseActivity<ActivityIngameBinding, IngameViewModel>() {
 
     companion object {
@@ -17,13 +18,15 @@ class IngameActivity : BaseActivity<ActivityIngameBinding, IngameViewModel>() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        DataBindingUtil.setContentView<ActivityIngameBinding>(this, R.layout.activity_ingame)
+        val binding = DataBindingUtil.setContentView<ActivityIngameBinding>(this, R.layout.activity_ingame)
 
         val navController = findNavController(R.id.nav_host_fragment)
 
         navController.setGraph(R.navigation.ingame_navigation, Bundle().apply {
             putParcelable("homeInput", IngameHomeDestinationInput(intent.getLongExtra(KEY_GAME_ID, 0)))
         })
+
+        binding.root
     }
 
     override fun instantiateViewModel(): IngameViewModel =
