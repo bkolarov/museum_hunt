@@ -1,7 +1,6 @@
 package bg.tusofia.pmu.museumhunt.di.activity
 
 import androidx.lifecycle.ViewModel
-import bg.tusofia.pmu.museumhunt.di.activity.scope.ActivityScope
 import bg.tusofia.pmu.museumhunt.di.viewmodel.factory.ViewModelFactoryModule
 import bg.tusofia.pmu.museumhunt.di.viewmodel.factory.ViewModelProviderFactory
 import dagger.Module
@@ -17,7 +16,6 @@ import javax.inject.Provider
 class ActivityModule {
 
     @Provides
-    @ActivityScope
     fun provideViewModelFactory(
         creators: Map<Class<out ViewModel>, @JvmSuppressWildcards Provider<ViewModel>>
     ) = ViewModelProviderFactory(creators)

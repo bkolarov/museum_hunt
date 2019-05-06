@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/ingame_navigation"
+    app:startDestination="@id/home">
+
+    <fragment
+        android:id="@+id/home"
+        android:name="bg.tusofia.pmu.museumhunt.ingame.init.IngameHomeDestinationFragment"
+        tools:layout="@layout/fragment_ingame_home_destination">
+        <action
+            android:id="@+id/action_home_to_unityLauncherFragment"
+            app:destination="@id/unityLauncherFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:launchSingleTop="true"
+            app:popExitAnim="@anim/nav_default_exit_anim"
+            app:popUpTo="@id/home"
+            app:popUpToInclusive="true" />
+        <argument
+            android:name="homeInput"
+            app:argType="bg.tusofia.pmu.museumhunt.ingame.init.IngameHomeDestinationInput" />
+        <action
+            android:id="@+id/action_home_to_riddleFragment"
+            app:destination="@id/riddleFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:launchSingleTop="true"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim"
+            app:popUpTo="@id/home"
+            app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/action_home_to_mapFragment"
+            app:destination="@id/mapFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:launchSingleTop="true"
+            app:popUpToInclusive="false" />
+    </fragment>
+    <fragment
+        android:id="@+id/riddleFragment"
+        android:name="bg.tusofia.pmu.museumhunt.ingame.riddle.RiddleFragment"
+        android:label="RiddleFragment"
+        tools:layout="@layout/fragment_riddle">
+        <action
+            android:id="@+id/action_riddleFragment_to_mapFragment"
+            app:destination="@id/mapFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:launchSingleTop="true"
+            app:popUpTo="@id/home"
+            app:popUpToInclusive="true" />
+        <argument
+            android:name="levelId"
+            app:argType="long" />
+    </fragment>
+    <fragment
+        android:id="@+id/unityLauncherFragment"
+        android:name="bg.tusofia.pmu.museumhunt.ingame.unity.UnityLauncherFragment"
+        android:label="UnityLauncherFragment"
+        tools:layout="@layout/fragment_unity_launcher">
+        <action
+            android:id="@+id/action_unityLauncherFragment_to_riddleFragment"
+            app:destination="@id/riddleFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:launchSingleTop="true"
+            app:popExitAnim="@anim/nav_default_exit_anim"
+            app:popUpTo="@id/home"
+            app:popUpToInclusive="true" />
+        <argument
+            android:name="levelId"
+            app:argType="long" />
+    </fragment>
+    <fragment android:id="@+id/mapFragment">
+        <action
+            android:id="@+id/action_mapFragment_to_gameCompletedFragment"
+            app:destination="@id/gameCompletedFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:launchSingleTop="true"
+            app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/action_mapFragment_pop"
+            app:destination="@id/home"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:launchSingleTop="true"
+            app:popUpToInclusive="true" />
+        <argument
+            android:name="levelId"
+            app:argType="long" />
+    </fragment>
+    <fragment android:id="@+id/gameCompletedFragment">
+        <action
+            android:id="@+id/action_gameCompletedFragment_to_placeholder"
+            app:destination="@id/home"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_enter_anim"
+            app:launchSingleTop="true"
+            app:popUpToInclusive="true" />
+    </fragment>
+    <action
+        android:id="@+id/action_global_home"
+        app:destination="@id/home"
+        app:launchSingleTop="true"
+        app:popUpToInclusive="true" />
+</navigation>

@@ -14,6 +14,10 @@ class MuseumHuntApplication : DaggerApplication() {
         super.onCreate()
 
         Timber.plant(Timber.DebugTree())
+
+//        RxJavaPlugins.setErrorHandler {
+//            Timber.e(it)
+//        }
     }
 
     override fun applicationInjector(): AndroidInjector<MuseumHuntApplication> {

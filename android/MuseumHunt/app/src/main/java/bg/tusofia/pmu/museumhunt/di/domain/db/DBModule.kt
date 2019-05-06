@@ -25,4 +25,7 @@ class DBModule {
     @Provides
     fun provideGameDao(museumHuntRoomDB: MuseumHuntRoomDB) = museumHuntRoomDB.gameDao()
 
+    @Singleton
+    @Provides
+    fun provideLevelProgressDao(museumHuntRoomDB: MuseumHuntRoomDB) = museumHuntRoomDB.levelDao()
 }

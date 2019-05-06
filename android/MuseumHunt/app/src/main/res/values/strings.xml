@@ -1,5 +1,10 @@
 <resources>
-    <string name="app_name">MuseumHunt</string>
+    <string name="app_name">Лов на музеи</string>
     <string name="main_activity_new_game">Нова игра</string>
     <string name="main_activity_continue">Продължи</string>
+    <string name="default_error_dialog_message">Опа! Нещо не е наред. Моля опитайте отново.</string>
+    <string name="ok">Добре</string>
+    <string name="menu_toolbar_help">Помощ</string>
+    <string name="riddle_answer_error">Грешен отговор!</string>
+    <string name="dialog_riddle_hint_title">Вашите подсказки са:</string>
 </resources>

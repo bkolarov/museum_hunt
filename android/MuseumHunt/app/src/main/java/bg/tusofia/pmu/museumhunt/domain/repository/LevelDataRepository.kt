@@ -1,8 +1,10 @@
 package bg.tusofia.pmu.museumhunt.domain.repository
 
+import android.os.Parcelable
 import bg.tusofia.pmu.museumhunt.R
 import bg.tusofia.pmu.museumhunt.base.resources.ResourceManager
 import io.reactivex.Single
+import kotlinx.android.parcel.Parcelize
 
 interface LevelDataRepository {
 
@@ -68,18 +70,24 @@ class LevelDataRepositoryImpl(private val resourceManager: ResourceManager) : Le
     }
 }
 
+@Parcelize
 data class LevelData(
     val stageObstacle: StageObstacle,
     val stageRiddle: StageRiddle,
     val stageLocation: StageLocation
-)
+) : Parcelable
 
-data class StageObstacle(val hintWords: List<String>)
+@Parcelize
+data class StageObstacle(val hintWords: List<String>) : Parcelable
 
-data class StageRiddle(val riddle: String, val answers: List<Answer>)
+@Parcelize
+data class StageRiddle(val riddle: String, val answers: List<Answer>) : Parcelable
 
-data class Answer(val answer: String, val isCorrect: Boolean = false)
+@Parcelize
+data class Answer(val answer: String, val isCorrect: Boolean = false) : Parcelable
 
-data class StageLocation(val locationCoordinates: LocationCoordinates)
+@Parcelize
+data class StageLocation(val locationCoordinates: LocationCoordinates) : Parcelable
 
-data class LocationCoordinates(val longitude: Double, val latitude: Double)
+@Parcelize
+data class LocationCoordinates(val longitude: Double, val latitude: Double) : Parcelable
