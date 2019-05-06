@@ -32,7 +32,7 @@ class LevelDataRepositoryImpl(private val resourceManager: ResourceManager) : Le
                             Answer(level1Answers[3])
                         )
                     ),
-                    stageLocation = StageLocation(LocationCoordinates(42.6558745, 23.2654635))
+                    stageLocation = StageLocation(LocationCoordinates(23.2654635, 42.6558745))
                 )
                 1 -> LevelData(
                     stageObstacle = StageObstacle(resourceManager.getStringArray(R.array.level_2_obstacle_hints).toList()),
@@ -45,7 +45,7 @@ class LevelDataRepositoryImpl(private val resourceManager: ResourceManager) : Le
                             Answer(level2Answers[3])
                         )
                     ),
-                    stageLocation = StageLocation(LocationCoordinates(42.6552672, 23.2687588))
+                    stageLocation = StageLocation(LocationCoordinates(23.2687588, 42.6552672))
                 )
                 2 -> LevelData(
                     stageObstacle = StageObstacle(resourceManager.getStringArray(R.array.level_3_obstacle_hints).toList()),
@@ -58,7 +58,7 @@ class LevelDataRepositoryImpl(private val resourceManager: ResourceManager) : Le
                             Answer(level3Answers[3])
                         )
                     ),
-                    stageLocation = StageLocation(LocationCoordinates(42.687435, 23.335202))
+                    stageLocation = StageLocation(LocationCoordinates(23.335202, 42.687435))
                 )
                 else -> throw IllegalStateException("Wrong number level")
             }

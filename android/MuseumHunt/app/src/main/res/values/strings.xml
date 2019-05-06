@@ -7,4 +7,6 @@
     <string name="menu_toolbar_help">Помощ</string>
     <string name="riddle_answer_error">Грешен отговор!</string>
     <string name="dialog_riddle_hint_title">Вашите подсказки са:</string>
+    <string name="map_open_maps">Отворете в Google карти</string>
+    <string name="map_title">Отидете на мястото</string>
 </resources>

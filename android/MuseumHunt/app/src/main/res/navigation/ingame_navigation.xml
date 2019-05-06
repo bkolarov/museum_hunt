@@ -73,7 +73,10 @@
             android:name="levelId"
             app:argType="long" />
     </fragment>
-    <fragment android:id="@+id/mapFragment">
+    <fragment
+        android:id="@+id/mapFragment"
+        android:name="bg.tusofia.pmu.museumhunt.ingame.location.MapFragment"
+        tools:layout="@layout/fragment_map">
         <action
             android:id="@+id/action_mapFragment_to_gameCompletedFragment"
             app:destination="@id/gameCompletedFragment"

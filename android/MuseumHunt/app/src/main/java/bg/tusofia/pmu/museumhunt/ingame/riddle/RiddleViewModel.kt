@@ -52,6 +52,7 @@ class RiddleViewModel @Inject constructor(
         }
 
     fun init(levelId: Long) {
+        this.levelId = levelId
         getLevelProgressDataUseCase.getLevelProgressDataUseCase(levelId)
             .observeOn(AndroidSchedulers.mainThread())
             .doOnSuccess {

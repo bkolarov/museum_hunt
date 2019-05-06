@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import bg.tusofia.pmu.museumhunt.R
@@ -51,8 +52,8 @@ class RiddleFragment : BaseFragment<FragmentRiddleBinding, RiddleViewModel>() {
                 .show()
         })
 
-        viewModel.nextScreenEevent.observe(viewLifecycleOwner, Observer {
-
+        viewModel.nextScreenEevent.observe(viewLifecycleOwner, Observer { args ->
+            args?.levelId?.let { findNavController().navigate(RiddleFragmentDirections.actionRiddleFragmentToMapFragment(it)) }
         })
 
         binding { vm ->

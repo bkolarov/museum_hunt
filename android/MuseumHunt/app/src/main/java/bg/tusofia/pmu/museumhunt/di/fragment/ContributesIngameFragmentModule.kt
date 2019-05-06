@@ -2,6 +2,7 @@ package bg.tusofia.pmu.museumhunt.di.fragment
 
 import bg.tusofia.pmu.museumhunt.di.fragment.scope.FragmentScope
 import bg.tusofia.pmu.museumhunt.ingame.init.IngameHomeDestinationFragment
+import bg.tusofia.pmu.museumhunt.ingame.location.MapFragment
 import bg.tusofia.pmu.museumhunt.ingame.riddle.RiddleFragment
 import bg.tusofia.pmu.museumhunt.ingame.unity.UnityLauncherFragment
 import dagger.Module
@@ -21,4 +22,8 @@ abstract class ContributesIngameFragmentModule {
     @FragmentScope
     @ContributesAndroidInjector(modules = [FragmentModule::class])
     abstract fun contributeUnityLauncherFragment(): UnityLauncherFragment
+
+    @FragmentScope
+    @ContributesAndroidInjector(modules = [FragmentModule::class])
+    abstract fun contributeMapFragment(): MapFragment
 }
