@@ -1,5 +1,6 @@
 package bg.tusofia.pmu.museumhunt.base.fragment
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
@@ -35,5 +36,9 @@ abstract class BaseFragment<BindingT : ViewDataBinding, ViewModelT : BaseViewMod
 
     protected fun binding(block: BindingT.(vm: ViewModelT) -> Unit) {
         binding?.block(viewModel)
+    }
+
+    protected fun Intent.start() {
+        startActivity(this)
     }
 }

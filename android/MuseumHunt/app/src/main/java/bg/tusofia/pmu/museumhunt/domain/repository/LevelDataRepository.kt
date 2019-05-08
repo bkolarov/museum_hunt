@@ -14,6 +14,12 @@ interface LevelDataRepository {
 
 class LevelDataRepositoryImpl(private val resourceManager: ResourceManager) : LevelDataRepository {
 
+    companion object {
+        const val stage1Url = "https://goo.gl/maps/f8N1534UAzDB5W7H6"
+        const val stage2Url = "https://goo.gl/maps/LDwxKGLRWdDxwND59"
+        const val stage3Url = "https://goo.gl/maps/rrijc7siUQdPCjrQA"
+    }
+
     override fun getLevelData(levelNum: Int): Single<LevelData> {
         return try {
             val level1Answers = resourceManager.getStringArray(R.array.level_1_riddle_answers)
@@ -32,7 +38,7 @@ class LevelDataRepositoryImpl(private val resourceManager: ResourceManager) : Le
                             Answer(level1Answers[3])
                         )
                     ),
-                    stageLocation = StageLocation(LocationCoordinates(23.2654635, 42.6558745))
+                    stageLocation = StageLocation(LocationCoordinates(42.6955998,23.3262678, stage1Url))
                 )
                 1 -> LevelData(
                     stageObstacle = StageObstacle(resourceManager.getStringArray(R.array.level_2_obstacle_hints).toList()),
@@ -45,7 +51,7 @@ class LevelDataRepositoryImpl(private val resourceManager: ResourceManager) : Le
                             Answer(level2Answers[3])
                         )
                     ),
-                    stageLocation = StageLocation(LocationCoordinates(23.2687588, 42.6552672))
+                    stageLocation = StageLocation(LocationCoordinates(42.6549837,23.2686932, stage2Url))
                 )
                 2 -> LevelData(
                     stageObstacle = StageObstacle(resourceManager.getStringArray(R.array.level_3_obstacle_hints).toList()),
@@ -58,7 +64,7 @@ class LevelDataRepositoryImpl(private val resourceManager: ResourceManager) : Le
                             Answer(level3Answers[3])
                         )
                     ),
-                    stageLocation = StageLocation(LocationCoordinates(23.335202, 42.687435))
+                    stageLocation = StageLocation(LocationCoordinates(42.6804042,23.317959, stage3Url))
                 )
                 else -> throw IllegalStateException("Wrong number level")
             }
@@ -90,4 +96,4 @@ data class Answer(val answer: String, val isCorrect: Boolean = false) : Parcelab
 data class StageLocation(val locationCoordinates: LocationCoordinates) : Parcelable
 
 @Parcelize
-data class LocationCoordinates(val longitude: Double, val latitude: Double) : Parcelable
+data class LocationCoordinates(val latitude: Double, val longitude: Double, val url: String) : Parcelable

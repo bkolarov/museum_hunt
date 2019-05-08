@@ -9,4 +9,7 @@
     <string name="dialog_riddle_hint_title">Вашите подсказки са:</string>
     <string name="map_open_maps">Отворете в Google карти</string>
     <string name="map_title">Отидете на мястото</string>
+    <string name="permission_camera_never_askagain">Моля да разрешите локацията от настройките на телефона.</string>
+    <string name="cancel">Отказ</string>
+    <string name="permission_location_rationale">Достъпът до вашето местоположение е необходим, за да разберем, че сте стигнали до необходимата дестинация. Продължаването на нивото в противен случай е невъзможно!</string>
 </resources>
