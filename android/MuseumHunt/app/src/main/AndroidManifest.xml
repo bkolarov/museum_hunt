@@ -79,6 +79,7 @@
         </activity>
         <activity
             android:name=".ingame.IngameActivity"
+            android:hardwareAccelerated="true"
             android:theme="@style/AppTheme.InGame"
             android:screenOrientation="portrait" />
     </application>
