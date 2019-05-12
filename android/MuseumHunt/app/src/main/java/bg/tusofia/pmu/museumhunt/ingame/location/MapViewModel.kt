@@ -20,6 +20,8 @@ import bg.tusofia.pmu.museumhunt.util.arrow.onCancel
 import bg.tusofia.pmu.museumhunt.util.arrow.onError
 import bg.tusofia.pmu.museumhunt.util.arrow.onLocationError
 import bg.tusofia.pmu.museumhunt.util.arrow.onSuccess
+import bg.tusofia.pmu.museumhunt.util.arrow.onUpdate
+import bg.tusofia.pmu.museumhunt.util.location.toLocation
 import bg.tusofia.pmu.museumhunt.util.rx.addTo
 import com.google.android.gms.common.api.ResolvableApiException
 import com.google.android.gms.location.LocationRequest
@@ -44,6 +46,7 @@ class MapViewModel @Inject constructor(
     private val checkLocationSettingsUseCase: CheckLocationSettingsUseCase
 ) : BaseViewModel(resourceManager) {
 
+    // Begin region Events
     private val _goBackEvent = LiveEvent<Unit>()
     private val _showDialog = LiveEvent<DialogValues>()
     private val _showDestinationEvent = LiveEvent<LocationCoordinates>()
@@ -62,8 +65,15 @@ class MapViewModel @Inject constructor(
     val resolveLocationSettingsEvent: LiveData<ResolvableApiException> = _resolveLocationSettingsEvent
     val currentLocationEvent: LiveData<Location> = _currentLocationEvent
 
+    // End region Events
+
+    // Begin region data
+
     private var destinationLocation: StageLocation? = null
 
+    // End region data
+
+    // Begin region Load
     private val locationRequest = LocationRequest.create().apply {
         interval = 1000
         fastestInterval = 1000
@@ -76,10 +86,13 @@ class MapViewModel @Inject constructor(
 
     private var shouldCheckLocationSettingsOnResume = true
 
+    // Begin region inputs
     private val locationPermissionGrantedSubject = PublishSubject.create<Boolean>()
     private val locationSettingsSubject = PublishSubject.create<Boolean>()
     private val mapReadySubject = PublishSubject.create<Boolean>()
     private val dataLoadedSubject = PublishSubject.create<StageLocation>()
+
+    // End region inputs
 
     private var locationSettingsDisposable: Disposable? = null
     private var locationUpdatesDisposable: Disposable? = null
@@ -105,6 +118,8 @@ class MapViewModel @Inject constructor(
 
             Pair(locationReady, destinationLocation)
         }
+
+    // End region Load
 
     private operator fun Array<out Any>.get(subject: PublishSubject<out Any>): Any = this[subjectsList.indexOf(subject)]
 
@@ -158,8 +173,9 @@ class MapViewModel @Inject constructor(
         Timber.d("Starting location updates")
         locationUpdatesDisposable = locationUpdatesDisposable ?: locationService.requestUpdates(locationRequest)
             .observeOn(AndroidSchedulers.mainThread())
-            .onSuccess {
+            .onUpdate {
                 Timber.d("location updated: ${it.location.latitude} | ${it.location.longitude}")
+                checkDestinationReached(it)
                 _currentLocationEvent.postValue(it.location)
             }
             .onError {
@@ -172,6 +188,21 @@ class MapViewModel @Inject constructor(
                 Timber.d("Location updates started")
             }
             .subscribe()
+    }
+
+    private fun checkDestinationReached(currentLocation: LocationData) {
+        destinationLocation?.locationCoordinates?.let {
+            val results = floatArrayOf(0f)
+            Location.distanceBetween(
+                currentLocation.location.latitude,
+                currentLocation.location.longitude,
+                it.latitude,
+                it.longitude,
+                results)
+            val distance = results[0]
+
+            Timber.d("Distance to destination: $distance")
+        }
     }
 
     private fun stopLocationUpdates() {
@@ -242,7 +273,10 @@ class MapViewModel @Inject constructor(
     }
 
     fun onHelpClick() {
-
+        DialogValues().apply {
+            message = getString(R.string.map_help)
+            positiveBtnTxt = getString(R.string.ok)
+        }.postOn(_showDialog)
     }
 
     fun onToolbarNavigationClick() {

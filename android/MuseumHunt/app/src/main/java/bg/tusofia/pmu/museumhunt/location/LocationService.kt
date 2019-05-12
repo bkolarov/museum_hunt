@@ -5,7 +5,8 @@ import androidx.annotation.RequiresPermission
 import arrow.core.Either
 import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.location.*
-import io.reactivex.Observable
+import io.reactivex.BackpressureStrategy
+import io.reactivex.Flowable
 import io.reactivex.subjects.PublishSubject
 
 interface LocationService {
@@ -13,7 +14,7 @@ interface LocationService {
     @RequiresPermission(anyOf = ["android.permission.ACCESS_COARSE_LOCATION", "android.permission.ACCESS_FINE_LOCATION"])
     fun requestUpdates(
         locationRequest: LocationRequest
-    ): Observable<Either<LocationError, LocationData>>
+    ): Flowable<Either<LocationError, LocationData>>
 }
 
 class LocationServiceImpl(
@@ -23,7 +24,7 @@ class LocationServiceImpl(
     @RequiresPermission(anyOf = ["android.permission.ACCESS_COARSE_LOCATION", "android.permission.ACCESS_FINE_LOCATION"])
     override fun requestUpdates(
         locationRequest: LocationRequest
-    ): Observable<Either<LocationError, LocationData>> {
+    ): Flowable<Either<LocationError, LocationData>> {
         val resultSubject = PublishSubject.create<MHLocationResult>()
 
         val locationCallback = object : LocationCallback() {
@@ -49,6 +50,7 @@ class LocationServiceImpl(
                 fusedLocationClient.removeLocationUpdates(locationCallback)
             }
             .onErrorReturn { Either.left(UnknownError(it)) }
+            .toFlowable(BackpressureStrategy.DROP)
     }
 }
 
