@@ -4,13 +4,13 @@ import android.content.Context
 import bg.tusofia.pmu.museumhunt.application.MuseumHuntApplication
 import bg.tusofia.pmu.museumhunt.base.resources.ResourceManager
 import bg.tusofia.pmu.museumhunt.base.resources.ResourceManagerImpl
-import com.google.gson.Gson
+import bg.tusofia.pmu.museumhunt.di.location.LocationModule
+import com.google.android.gms.location.FusedLocationProviderClient
 import dagger.Module
 import dagger.Provides
 import javax.inject.Singleton
 
-
-@Module
+@Module(includes = [LocationModule::class])
 class AppModule {
 
     @Provides

@@ -22,7 +22,7 @@
             android:onClick="@{() -> viewModel.onClick()}"
             android:text="@{viewModel.text}"
             android:maxHeight="100dp"
-            android:autoSizeTextType="uniform"
+            android:textSize="14sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"

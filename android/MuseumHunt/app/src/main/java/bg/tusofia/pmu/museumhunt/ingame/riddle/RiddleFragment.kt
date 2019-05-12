@@ -74,7 +74,6 @@ class RiddleFragment : BaseFragment<FragmentRiddleBinding, RiddleViewModel>() {
             }
 
             rvAnswers.layoutManager = LinearLayoutManager(context)
-            rvAnswers.setHasFixedSize(true)
             rvAnswers.adapter = answersAdapter
         }
 

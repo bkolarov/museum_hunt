@@ -12,4 +12,5 @@
     <string name="permission_camera_never_askagain">Моля да разрешите локацията от настройките на телефона.</string>
     <string name="cancel">Отказ</string>
     <string name="permission_location_rationale">Достъпът до вашето местоположение е необходим, за да разберем, че сте стигнали до необходимата дестинация. Продължаването на нивото в противен случай е невъзможно!</string>
+    <string name="map_dialog_location_settings_change_needed_message">Моля разрешете вашето местоположение в настройките, за да продължите играта.</string>
 </resources>

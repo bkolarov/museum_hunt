@@ -2,8 +2,11 @@ package bg.tusofia.pmu.museumhunt.base.fragment
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.View
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import bg.tusofia.pmu.museumhunt.base.viewmodel.BaseViewModel
 import dagger.android.support.AndroidSupportInjection
@@ -24,8 +27,11 @@ abstract class BaseFragment<BindingT : ViewDataBinding, ViewModelT : BaseViewMod
         super.onCreate(savedInstanceState)
 
         viewModel = instantiateViewModel()
+    }
 
-        lifecycle.addObserver(viewModel)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        viewLifecycleOwner.lifecycle.addObserver(viewModel)
     }
 
     protected open fun performInjection() {
@@ -41,4 +47,6 @@ abstract class BaseFragment<BindingT : ViewDataBinding, ViewModelT : BaseViewMod
     protected fun Intent.start() {
         startActivity(this)
     }
+
+    protected fun <T> LiveData<T>.observe(observer: Observer<T>) = observe(viewLifecycleOwner, observer)
 }

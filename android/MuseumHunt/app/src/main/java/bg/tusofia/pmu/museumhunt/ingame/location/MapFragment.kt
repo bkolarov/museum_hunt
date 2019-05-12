@@ -2,6 +2,8 @@ package bg.tusofia.pmu.museumhunt.ingame.location
 
 import android.Manifest
 import android.annotation.SuppressLint
+import android.app.Activity
+import android.content.DialogInterface
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -15,7 +17,9 @@ import androidx.navigation.fragment.navArgs
 import bg.tusofia.pmu.museumhunt.R
 import bg.tusofia.pmu.museumhunt.base.fragment.BaseFragment
 import bg.tusofia.pmu.museumhunt.databinding.FragmentMapBinding
+import bg.tusofia.pmu.museumhunt.location.LiveDataLocationSource
 import bg.tusofia.pmu.museumhunt.util.maps.addTo
+import com.google.android.gms.location.LocationSettingsStates
 import com.google.android.gms.maps.*
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MapStyleOptions
@@ -29,6 +33,7 @@ class MapFragment : BaseFragment<FragmentMapBinding, MapViewModel>(),
 
     companion object {
         private const val initZoomLevel = 18f
+        private const val reqCodeCheckSettings = 100
     }
 
     private val input: MapFragmentArgs by navArgs()
@@ -86,37 +91,56 @@ class MapFragment : BaseFragment<FragmentMapBinding, MapViewModel>(),
 
     @SuppressLint("MissingPermission")
     private fun observeViewModel() {
-        viewModel.showDestinationEvent.observe(viewLifecycleOwner, Observer {
-            val latLng = LatLng(it.latitude, it.longitude)
-            val camUpdate = CameraUpdateFactory.newLatLng(latLng)
+        viewModel.apply {
+            showDestinationEvent.observe(Observer {
+                val latLng = LatLng(it.latitude, it.longitude)
+                val camUpdate = CameraUpdateFactory.newLatLng(latLng)
 
-            map.animateCamera(camUpdate)
+                map.animateCamera(camUpdate)
 
-            MarkerOptions().apply {
-                position(latLng)
-            }.addTo(map)
-        })
+                MarkerOptions().apply {
+                    position(latLng)
+                }.addTo(map)
+            })
 
-        viewModel.showMyLocationEvent.observe(viewLifecycleOwner, Observer {
-            map.isMyLocationEnabled = it
-            map.uiSettings.isMyLocationButtonEnabled = it
-        })
+            showMyLocationEvent.observe(Observer {
+                map.isMyLocationEnabled = it
+                map.uiSettings.isMyLocationButtonEnabled = it
+            })
 
-        viewModel.openMaps.observe(viewLifecycleOwner, Observer { uri ->
-            Intent(Intent.ACTION_VIEW).apply {
-                data = uri
-            }.start()
-        })
+            openMaps.observe(Observer { uri ->
+                Intent(Intent.ACTION_VIEW).apply {
+                    data = uri
+                }.start()
+            })
 
-        viewModel.requestLocationPermissionEvent.observe(viewLifecycleOwner, Observer {
-            requestLocationPermissionWithPermissionCheck()
-        })
+            requestLocationPermissionEvent.observe(Observer {
+                requestLocationPermissionWithPermissionCheck()
+            })
+
+            resolveLocationSettingsEvent.observe(Observer {
+                startIntentSenderForResult(it.resolution.intentSender, reqCodeCheckSettings, null, 0, 0, 0, null)
+            })
+
+            showDialog.observe(Observer { dialogValues ->
+                activity?.let {
+                    AlertDialog.Builder(it, R.style.AppTheme_Dialog_InGame)
+                        .setTitle(dialogValues.title)
+                        .setMessage(dialogValues.message)
+                        .setPositiveButton(dialogValues.positiveBtnTxt) { _, _ ->  dialogValues.positiveBtnCallback?.invoke()}
+                        .setNegativeButton(dialogValues.negativeBtnText) { _, _ -> dialogValues.negativeBtnCallback?.invoke() }
+                        .setCancelable(dialogValues.modal)
+                        .show()
+                }
+            })
+        }
     }
 
     override fun onMapReady(map: GoogleMap) {
         this.map = map
         map.setMapStyle(MapStyleOptions.loadRawResourceStyle(context, R.raw.map_style))
         map.moveCamera(CameraUpdateFactory.zoomTo(initZoomLevel))
+        map.setLocationSource(LiveDataLocationSource(viewModel.currentLocationEvent))
 
         viewModel.onMapReady()
     }
@@ -151,6 +175,19 @@ class MapFragment : BaseFragment<FragmentMapBinding, MapViewModel>(),
                 .setCancelable(false)
                 .setMessage(messageResId)
                 .show()
+        }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        when (requestCode) {
+            reqCodeCheckSettings -> {
+                val states = LocationSettingsStates.fromIntent(data)
+                when (resultCode) {
+                    Activity.RESULT_OK -> viewModel.onLocationSettingsChanged(states)
+                }
+            }
         }
     }
 
