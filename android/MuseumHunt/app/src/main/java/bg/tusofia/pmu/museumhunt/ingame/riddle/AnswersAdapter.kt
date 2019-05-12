@@ -38,7 +38,7 @@ class AnswersAdapter(private val answerObserver: Observer<Answer>) : RecyclerVie
         holder.bind(answers[position])
     }
 
-    class AnswerVH(binding: LayoutRiddleAnswerBinding, answerObserver: Observer<Answer>) : RecyclerView.ViewHolder(binding.root) {
+    class AnswerVH(private val binding: LayoutRiddleAnswerBinding, answerObserver: Observer<Answer>) : RecyclerView.ViewHolder(binding.root) {
 
         private val viewModel = AnswerItemViewModel(answerObserver)
 
@@ -48,8 +48,8 @@ class AnswersAdapter(private val answerObserver: Observer<Answer>) : RecyclerVie
 
         fun bind(answer: Answer) {
             viewModel.bind(answer)
+            binding.executePendingBindings()
         }
-
     }
 
 }

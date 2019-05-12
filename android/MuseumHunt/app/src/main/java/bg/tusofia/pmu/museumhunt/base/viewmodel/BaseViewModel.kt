@@ -4,7 +4,9 @@ import androidx.databinding.Bindable
 import androidx.databinding.Observable
 import androidx.databinding.PropertyChangeRegistry
 import androidx.lifecycle.LifecycleObserver
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import bg.tusofia.pmu.museumhunt.base.dialog.DialogValues
 import bg.tusofia.pmu.museumhunt.base.resources.ResourceManager
 import io.reactivex.disposables.CompositeDisposable
 
@@ -69,5 +71,7 @@ abstract class BaseViewModel(resourceManager: ResourceManager)
         }
         mCallbacks?.notifyCallbacks(this, fieldId, null)
     }
+
+    protected fun DialogValues.postOn(liveData: MutableLiveData<DialogValues>) = liveData.postValue(this)
 
 }

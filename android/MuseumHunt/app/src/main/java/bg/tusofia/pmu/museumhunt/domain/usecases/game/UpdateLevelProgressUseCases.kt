@@ -27,3 +27,30 @@ class SetObstaclesPassedUseCase @Inject constructor(
             }
             .ignoreElement()
 }
+
+class SetRiddleAnsweredUseCase @Inject constructor(
+    private val updateLevelStageUseCase: UpdateLevelStageUseCase
+) {
+
+    fun setRiddleAnswered(levelId: Long): Completable {
+        return updateLevelStageUseCase.updateLevelStage(levelId, LevelStage.RIDDLE_PASSED)
+            .observeOn(Schedulers.computation())
+            .toSingle()
+            .ignoreElement()
+    }
+
+}
+
+class SetDestinationReachedUseCase @Inject constructor(
+    private val updateLevelStageUseCase: UpdateLevelStageUseCase
+) {
+
+    fun setDestinationReached(levelId: Long): Completable {
+        return updateLevelStageUseCase.updateLevelStage(levelId, LevelStage.COMPLETED)
+            .observeOn(Schedulers.computation())
+            .toSingle()
+            .ignoreElement()
+
+    }
+
+}

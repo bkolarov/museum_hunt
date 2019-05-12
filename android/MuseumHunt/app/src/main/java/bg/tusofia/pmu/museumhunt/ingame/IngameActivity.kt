@@ -7,7 +7,7 @@ import androidx.navigation.findNavController
 import bg.tusofia.pmu.museumhunt.R
 import bg.tusofia.pmu.museumhunt.base.activity.BaseActivity
 import bg.tusofia.pmu.museumhunt.databinding.ActivityIngameBinding
-import bg.tusofia.pmu.museumhunt.ingame.init.IngameHomeDestinationInput
+import bg.tusofia.pmu.museumhunt.ingame.init.ContinueGameInput
 
 
 class IngameActivity : BaseActivity<ActivityIngameBinding, IngameViewModel>() {
@@ -23,7 +23,7 @@ class IngameActivity : BaseActivity<ActivityIngameBinding, IngameViewModel>() {
         val navController = findNavController(R.id.nav_host_fragment)
 
         navController.setGraph(R.navigation.ingame_navigation, Bundle().apply {
-            putParcelable("homeInput", IngameHomeDestinationInput(intent.getLongExtra(KEY_GAME_ID, 0)))
+            putParcelable("homeInput", ContinueGameInput(intent.getLongExtra(KEY_GAME_ID, 0)))
         })
 
         binding.root

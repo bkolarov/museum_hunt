@@ -25,14 +25,14 @@ class IngameHomeDestinationFragment : BaseFragment<FragmentIngameHomeDestination
         super.onViewCreated(view, savedInstanceState)
 
         viewModel.openUnityModuleEvent.observe(viewLifecycleOwner, Observer {
-            findNavController().navigate(IngameHomeDestinationFragmentDirections.actionHomeToUnityLauncherFragment(it.levelId))
+            findNavController().navigate(IngameHomeDestinationFragmentDirections.actionHomeToUnityLauncherFragment(it))
         })
 
         viewModel.openRiddleScreenEvent.observe(viewLifecycleOwner, Observer {
-            findNavController().navigate(IngameHomeDestinationFragmentDirections.actionHomeToRiddleFragment(it.levelId))
+            findNavController().navigate(IngameHomeDestinationFragmentDirections.actionHomeToRiddleFragment(it))
         })
 
-        viewModel.decideAction(input.homeInput.gameId)
+        viewModel.decideAction(input.homeInput)
     }
 
     override fun instantiateViewModel(): IngameHomeDestinationViewModel =
@@ -40,5 +40,11 @@ class IngameHomeDestinationFragment : BaseFragment<FragmentIngameHomeDestination
 
 }
 
+sealed class IngameHomeDestinationInput : Parcelable
+
 @Parcelize
-data class IngameHomeDestinationInput(val gameId: Long) : Parcelable
+data class ContinueGameInput(
+    val gameId: Long) : IngameHomeDestinationInput()
+
+@Parcelize
+object NewGameInput : IngameHomeDestinationInput()

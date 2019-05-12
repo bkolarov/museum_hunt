@@ -39,7 +39,13 @@ class UnityLauncherFragment : BaseFragment<ViewDataBinding, UnityLauncherViewMod
             }
 
             Timber.d("start unity with data: $unityData")
-            startActivityForResult(intent, requestCodeUnityPlayer)
+//            startActivityForResult(intent, requestCodeUnityPlayer)
+            viewModel.onObstaclesPassed("{\n" +
+                    "        \"FoundWords\": [\n" +
+                    "            \"БИОЛОГИЯ\",\n" +
+                    "            \"ПРИРОДА\"\n" +
+                    "        ]\n" +
+                    "    }")
         })
 
         viewModel.goBackEvent.observe(viewLifecycleOwner, Observer {
@@ -47,10 +53,10 @@ class UnityLauncherFragment : BaseFragment<ViewDataBinding, UnityLauncherViewMod
         })
 
         viewModel.openRiddleScreenEvent.observe(viewLifecycleOwner, Observer {
-            findNavController().navigate(UnityLauncherFragmentDirections.actionUnityLauncherFragmentToRiddleFragment(it.levelId))
+            findNavController().navigate(UnityLauncherFragmentDirections.actionUnityLauncherFragmentToRiddleFragment(it))
         })
 
-        viewModel.initForLevel(input.levelId)
+        viewModel.initForLevel(input.args)
     }
 
     override fun instantiateViewModel(): UnityLauncherViewModel =

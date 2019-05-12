@@ -4,9 +4,11 @@ import androidx.activity.OnBackPressedCallback
 
 fun BaseFragment<*, *>.finishOnBackPressed() {
 
-    requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, OnBackPressedCallback {
-        activity?.finish()
-        true
+    requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true) {
+        override fun handleOnBackPressed() {
+            activity?.finish()
+        }
+
     })
 
 }
