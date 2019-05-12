@@ -53,10 +53,10 @@ class UnityLauncherFragment : BaseFragment<ViewDataBinding, UnityLauncherViewMod
         })
 
         viewModel.openRiddleScreenEvent.observe(viewLifecycleOwner, Observer {
-            findNavController().navigate(UnityLauncherFragmentDirections.actionUnityLauncherFragmentToRiddleFragment(it.levelId))
+            findNavController().navigate(UnityLauncherFragmentDirections.actionUnityLauncherFragmentToRiddleFragment(it))
         })
 
-        viewModel.initForLevel(input.levelId)
+        viewModel.initForLevel(input.args)
     }
 
     override fun instantiateViewModel(): UnityLauncherViewModel =

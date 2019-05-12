@@ -3,7 +3,6 @@ package bg.tusofia.pmu.museumhunt.ingame.location
 import android.Manifest
 import android.annotation.SuppressLint
 import android.app.Activity
-import android.content.DialogInterface
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -13,10 +12,12 @@ import androidx.annotation.StringRes
 import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import bg.tusofia.pmu.museumhunt.R
 import bg.tusofia.pmu.museumhunt.base.fragment.BaseFragment
 import bg.tusofia.pmu.museumhunt.databinding.FragmentMapBinding
+import bg.tusofia.pmu.museumhunt.ingame.init.ContinueGameInput
 import bg.tusofia.pmu.museumhunt.location.LiveDataLocationSource
 import bg.tusofia.pmu.museumhunt.util.maps.addTo
 import com.google.android.gms.location.LocationSettingsStates
@@ -69,7 +70,7 @@ class MapFragment : BaseFragment<FragmentMapBinding, MapViewModel>(),
             }
         }
 
-        viewModel.initWithLevelId(input.levelId)
+        viewModel.initWithLevelId(input.args)
     }
 
     private fun setupMap() {
@@ -92,6 +93,16 @@ class MapFragment : BaseFragment<FragmentMapBinding, MapViewModel>(),
     @SuppressLint("MissingPermission")
     private fun observeViewModel() {
         viewModel.apply {
+            goBackEvent.observe(Observer {
+
+            })
+
+            nextScreenEvent.observe(Observer { args ->
+                args?.let {
+                    findNavController().navigate(MapFragmentDirections.actionMapFragmentPop(ContinueGameInput(it.gameId)))
+                }
+            })
+
             showDestinationEvent.observe(Observer {
                 val latLng = LatLng(it.latitude, it.longitude)
                 val camUpdate = CameraUpdateFactory.newLatLng(latLng)
@@ -127,7 +138,7 @@ class MapFragment : BaseFragment<FragmentMapBinding, MapViewModel>(),
                     AlertDialog.Builder(it, R.style.AppTheme_Dialog_InGame)
                         .setTitle(dialogValues.title)
                         .setMessage(dialogValues.message)
-                        .setPositiveButton(dialogValues.positiveBtnTxt) { _, _ ->  dialogValues.positiveBtnCallback?.invoke()}
+                        .setPositiveButton(dialogValues.positiveBtnTxt) { _, _ -> dialogValues.positiveBtnCallback?.invoke() }
                         .setNegativeButton(dialogValues.negativeBtnText) { _, _ -> dialogValues.negativeBtnCallback?.invoke() }
                         .setCancelable(dialogValues.modal)
                         .show()

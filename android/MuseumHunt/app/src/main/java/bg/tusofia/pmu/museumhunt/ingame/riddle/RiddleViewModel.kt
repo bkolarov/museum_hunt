@@ -11,37 +11,37 @@ import bg.tusofia.pmu.museumhunt.domain.db.entity.LevelProgress
 import bg.tusofia.pmu.museumhunt.domain.db.entity.LevelStage
 import bg.tusofia.pmu.museumhunt.domain.repository.Answer
 import bg.tusofia.pmu.museumhunt.domain.usecases.game.GetLevelProgressDataUseCase
+import bg.tusofia.pmu.museumhunt.domain.usecases.game.SetRiddleAnsweredUseCase
 import bg.tusofia.pmu.museumhunt.domain.usecases.game.UpdateLevelStageUseCase
 import bg.tusofia.pmu.museumhunt.domain.usecases.level.GetLevelDataUseCase
-import bg.tusofia.pmu.museumhunt.ingame.usecase.NextScreenArgs
+import bg.tusofia.pmu.museumhunt.ingame.IngameArgs
 import bg.tusofia.pmu.museumhunt.util.rx.addTo
 import com.hadilq.liveevent.LiveEvent
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.functions.Consumer
 import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject
-import kotlin.properties.Delegates
 
 class RiddleViewModel @Inject constructor(
     resourceManager: ResourceManager,
     private val getLevelProgressDataUseCase: GetLevelProgressDataUseCase,
     private val levelDataUseCase: GetLevelDataUseCase,
-    private val updateLevelStageUseCase: UpdateLevelStageUseCase
+    private val setRiddleAnsweredUseCase: SetRiddleAnsweredUseCase
 ) : BaseViewModel(resourceManager) {
 
-    private var levelId: Long by Delegates.notNull()
+    private lateinit var ingameArgs: IngameArgs
     private var levelProgress: LevelProgress? = null
 
     private val _answersEvent = LiveEvent<List<Answer>>()
     private val _goBackEvent = LiveEvent<Unit>()
     private val _errorSnackBarEvent = LiveEvent<Unit>()
-    private val _nextScreenEvent = LiveEvent<NextScreenArgs>()
+    private val _nextScreenEvent = LiveEvent<IngameArgs>()
     private val _showDialogEvent = LiveEvent<DialogValues>()
 
     val answersEvent: LiveData<List<Answer>> = _answersEvent
     val goBackEvent: LiveData<Unit> = _goBackEvent
     val errorSnackBarEvent: LiveData<Unit> = _errorSnackBarEvent
-    val nextScreenEevent: LiveData<NextScreenArgs> = _nextScreenEvent
+    val nextScreenEevent: LiveData<IngameArgs> = _nextScreenEvent
     val showDialogEvent: LiveData<DialogValues> = _showDialogEvent
 
     @get:Bindable
@@ -51,9 +51,9 @@ class RiddleViewModel @Inject constructor(
             notifyPropertyChanged(BR.riddle)
         }
 
-    fun init(levelId: Long) {
-        this.levelId = levelId
-        getLevelProgressDataUseCase.getLevelProgressDataUseCase(levelId)
+    fun init(ingameArgs: IngameArgs) {
+        this.ingameArgs = ingameArgs
+        getLevelProgressDataUseCase.getLevelProgressDataUseCase(ingameArgs.levelId)
             .observeOn(AndroidSchedulers.mainThread())
             .doOnSuccess {
                 levelProgress = it
@@ -87,10 +87,10 @@ class RiddleViewModel @Inject constructor(
         if (!answer.isCorrect) {
             _errorSnackBarEvent.value = Unit
         } else {
-            updateLevelStageUseCase.updateLevelStage(levelId, LevelStage.RIDDLE_PASSED)
+            setRiddleAnsweredUseCase.setRiddleAnswered(ingameArgs.levelId)
                 .subscribeOn(AndroidSchedulers.mainThread())
                 .subscribe {
-                    _nextScreenEvent.postValue(NextScreenArgs(levelId))
+                    _nextScreenEvent.postValue(ingameArgs)
                 }
                 .addTo(container)
         }

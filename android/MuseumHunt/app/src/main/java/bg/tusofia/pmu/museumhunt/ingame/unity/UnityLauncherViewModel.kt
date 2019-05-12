@@ -6,37 +6,37 @@ import bg.tusofia.pmu.museumhunt.base.viewmodel.BaseViewModel
 import bg.tusofia.pmu.museumhunt.domain.usecases.game.SetObstaclesPassedUseCase
 import bg.tusofia.pmu.museumhunt.domain.usecases.level.ConvertUnityDataUseCase
 import bg.tusofia.pmu.museumhunt.domain.usecases.level.GetUnityModuleDataUseCase
+import bg.tusofia.pmu.museumhunt.ingame.IngameArgs
 import bg.tusofia.pmu.museumhunt.ingame.usecase.DecideNextScreenByLevelUseCase
-import bg.tusofia.pmu.museumhunt.ingame.usecase.NextScreenArgs
 import bg.tusofia.pmu.museumhunt.util.rx.addTo
 import com.hadilq.liveevent.LiveEvent
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.functions.Consumer
 import timber.log.Timber
 import javax.inject.Inject
-import kotlin.properties.Delegates
 
-class UnityLauncherViewModel @Inject constructor(resourceManager: ResourceManager,
-                                                 private val getUnityModuleDataUseCase: GetUnityModuleDataUseCase,
-                                                 private val convertUnityDataUseCase: ConvertUnityDataUseCase,
-                                                 private val setObstaclesPassedUseCase: SetObstaclesPassedUseCase,
-                                                 private val decideNextScreenByLevelUseCase: DecideNextScreenByLevelUseCase
+class UnityLauncherViewModel @Inject constructor(
+    resourceManager: ResourceManager,
+    private val getUnityModuleDataUseCase: GetUnityModuleDataUseCase,
+    private val convertUnityDataUseCase: ConvertUnityDataUseCase,
+    private val setObstaclesPassedUseCase: SetObstaclesPassedUseCase,
+    private val decideNextScreenByLevelUseCase: DecideNextScreenByLevelUseCase
 ) : BaseViewModel(resourceManager) {
 
-    private var levelId: Long by Delegates.notNull()
+    private lateinit var ingameArgs: IngameArgs
 
     private val _launchUnityModuleEvent = LiveEvent<String>()
     private val _goBackEvent = LiveEvent<Unit>()
 
     val launchUnityModuleLiveEvent: LiveData<String> = _launchUnityModuleEvent
-    val openRiddleScreenEvent: LiveData<NextScreenArgs> = decideNextScreenByLevelUseCase.openRiddleScreenEvent
+    val openRiddleScreenEvent: LiveData<IngameArgs> = decideNextScreenByLevelUseCase.openRiddleScreenEvent
 
     val goBackEvent: LiveData<Unit> = _goBackEvent
 
-    fun initForLevel(levelId: Long) {
-        this.levelId = levelId
+    fun initForLevel(ingameArgs: IngameArgs) {
+        this.ingameArgs = ingameArgs
 
-        getUnityModuleDataUseCase.getUnityModuleData(levelId)
+        getUnityModuleDataUseCase.getUnityModuleData(ingameArgs.levelId)
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(Consumer {
                 _launchUnityModuleEvent.value = it
@@ -48,9 +48,9 @@ class UnityLauncherViewModel @Inject constructor(resourceManager: ResourceManage
         Timber.d("obstacles passed: $unityModuleResult")
         val convertedResult = convertUnityDataUseCase.convertUnityData(unityModuleResult)
 
-        setObstaclesPassedUseCase.setObstaclesPassedUseCase(levelId, convertedResult)
+        setObstaclesPassedUseCase.setObstaclesPassedUseCase(ingameArgs.levelId, convertedResult)
             .observeOn(AndroidSchedulers.mainThread())
-            .andThen(decideNextScreenByLevelUseCase.decideNextScreenUseCase(levelId))
+            .andThen(decideNextScreenByLevelUseCase.decideNextScreenUseCase(ingameArgs))
             .subscribe()
             .addTo(container)
     }

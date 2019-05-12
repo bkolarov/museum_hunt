@@ -9,7 +9,7 @@ data class LevelProgress(
     @PrimaryKey(autoGenerate = true) val id: Long = 0,
     val number: Int,
     val stage: LevelStage,
-    val hintWords: MutableList<String>
+    val hintWords: MutableList<String> = mutableListOf()
 )
 
 enum class LevelStage {

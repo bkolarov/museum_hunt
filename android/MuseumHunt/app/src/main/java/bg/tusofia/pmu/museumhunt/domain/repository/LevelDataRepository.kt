@@ -38,7 +38,7 @@ class LevelDataRepositoryImpl(private val resourceManager: ResourceManager) : Le
                             Answer(level1Answers[3])
                         )
                     ),
-                    stageLocation = StageLocation(LocationCoordinates(42.6955998,23.3262678, stage1Url))
+                    stageLocation = StageLocation(LocationCoordinates(42.6955959, 23.3262678, stage1Url))
                 )
                 1 -> LevelData(
                     stageObstacle = StageObstacle(resourceManager.getStringArray(R.array.level_2_obstacle_hints).toList()),
@@ -51,7 +51,7 @@ class LevelDataRepositoryImpl(private val resourceManager: ResourceManager) : Le
                             Answer(level2Answers[3])
                         )
                     ),
-                    stageLocation = StageLocation(LocationCoordinates(42.6549837,23.2686932, stage2Url))
+                    stageLocation = StageLocation(LocationCoordinates(42.6549837, 23.2686932, stage2Url))
                 )
                 2 -> LevelData(
                     stageObstacle = StageObstacle(resourceManager.getStringArray(R.array.level_3_obstacle_hints).toList()),
@@ -64,7 +64,8 @@ class LevelDataRepositoryImpl(private val resourceManager: ResourceManager) : Le
                             Answer(level3Answers[3])
                         )
                     ),
-                    stageLocation = StageLocation(LocationCoordinates(42.6804042,23.317959, stage3Url))
+                    stageLocation = StageLocation(LocationCoordinates(42.6804042, 23.317959, stage3Url)),
+                    isLast = true
                 )
                 else -> throw IllegalStateException("Wrong number level")
             }
@@ -80,7 +81,8 @@ class LevelDataRepositoryImpl(private val resourceManager: ResourceManager) : Le
 data class LevelData(
     val stageObstacle: StageObstacle,
     val stageRiddle: StageRiddle,
-    val stageLocation: StageLocation
+    val stageLocation: StageLocation,
+    val isLast: Boolean = false
 ) : Parcelable
 
 @Parcelize

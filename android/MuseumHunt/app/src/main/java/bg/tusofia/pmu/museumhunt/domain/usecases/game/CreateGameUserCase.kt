@@ -11,7 +11,7 @@ import javax.inject.Inject
 class CreateGameUserCase @Inject constructor(private val gameRepository: GameRepository) {
 
     fun createGame(name: String): Single<Long> {
-        val levelProgress = LevelProgress(number = 0, stage = LevelStage.INIT, hintWords = mutableListOf())
+        val levelProgress = LevelProgress(number = 0, stage = LevelStage.INIT)
 
         return gameRepository.addLevelProgress(levelProgress)
             .flatMap { levelId ->

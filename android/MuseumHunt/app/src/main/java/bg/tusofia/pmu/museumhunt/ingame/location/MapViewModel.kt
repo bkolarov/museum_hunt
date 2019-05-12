@@ -11,17 +11,19 @@ import bg.tusofia.pmu.museumhunt.R
 import bg.tusofia.pmu.museumhunt.base.dialog.DialogValues
 import bg.tusofia.pmu.museumhunt.base.resources.ResourceManager
 import bg.tusofia.pmu.museumhunt.base.viewmodel.BaseViewModel
+import bg.tusofia.pmu.museumhunt.domain.db.entity.LevelStage
 import bg.tusofia.pmu.museumhunt.domain.repository.LocationCoordinates
 import bg.tusofia.pmu.museumhunt.domain.repository.StageLocation
 import bg.tusofia.pmu.museumhunt.domain.usecases.game.GetLevelProgressDataUseCase
+import bg.tusofia.pmu.museumhunt.domain.usecases.game.SetDestinationReachedUseCase
+import bg.tusofia.pmu.museumhunt.domain.usecases.game.UpdateLevelStageUseCase
 import bg.tusofia.pmu.museumhunt.domain.usecases.level.GetLevelDataUseCase
+import bg.tusofia.pmu.museumhunt.ingame.IngameArgs
 import bg.tusofia.pmu.museumhunt.location.*
 import bg.tusofia.pmu.museumhunt.util.arrow.onCancel
 import bg.tusofia.pmu.museumhunt.util.arrow.onError
 import bg.tusofia.pmu.museumhunt.util.arrow.onLocationError
 import bg.tusofia.pmu.museumhunt.util.arrow.onSuccess
-import bg.tusofia.pmu.museumhunt.util.arrow.onUpdate
-import bg.tusofia.pmu.museumhunt.util.location.toLocation
 import bg.tusofia.pmu.museumhunt.util.rx.addTo
 import com.google.android.gms.common.api.ResolvableApiException
 import com.google.android.gms.location.LocationRequest
@@ -32,6 +34,7 @@ import com.hadilq.liveevent.LiveEvent
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
+import io.reactivex.functions.Action
 import io.reactivex.functions.Consumer
 import io.reactivex.schedulers.Schedulers
 import io.reactivex.subjects.PublishSubject
@@ -42,13 +45,14 @@ class MapViewModel @Inject constructor(
     resourceManager: ResourceManager,
     private val getLevelProgressDataUseCase: GetLevelProgressDataUseCase,
     private val levelDataUseCase: GetLevelDataUseCase,
-    private val locationService: LocationService,
     private val checkLocationSettingsUseCase: CheckLocationSettingsUseCase,
-    private val trackDestinationReachedUseCase: TrackDestinationReachedUseCase
+    private val trackDestinationReachedUseCase: TrackDestinationReachedUseCase,
+    private val setDestinationReachedUseCase: SetDestinationReachedUseCase
 ) : BaseViewModel(resourceManager) {
 
     // Begin region Events
     private val _goBackEvent = LiveEvent<Unit>()
+    private val _nextScreenEvent = LiveEvent<IngameArgs>()
     private val _showDialog = LiveEvent<DialogValues>()
     private val _showDestinationEvent = LiveEvent<LocationCoordinates>()
     private val _showMyLocationEvent = LiveEvent<Boolean>()
@@ -58,6 +62,7 @@ class MapViewModel @Inject constructor(
     private val _currentLocationEvent = MutableLiveData<Location>()
 
     val goBackEvent: LiveData<Unit> = _goBackEvent
+    val nextScreenEvent: LiveData<IngameArgs> = _nextScreenEvent
     val showDialog: LiveData<DialogValues> = _showDialog
     val showDestinationEvent: LiveData<LocationCoordinates> = _showDestinationEvent
     val showMyLocationEvent: LiveData<Boolean> = _showMyLocationEvent
@@ -71,6 +76,7 @@ class MapViewModel @Inject constructor(
     // Begin region data
 
     private var destinationLocation: StageLocation? = null
+    private lateinit var ingameArgs: IngameArgs
 
     // End region data
 
@@ -172,24 +178,6 @@ class MapViewModel @Inject constructor(
     @SuppressLint("MissingPermission")
     private fun startLocationUpdates() {
         Timber.d("Starting location updates")
-//        locationUpdatesDisposable = locationUpdatesDisposable ?: locationService.requestUpdates(locationRequest)
-//            .observeOn(AndroidSchedulers.mainThread())
-//            .onUpdate {
-//                Timber.d("location updated: ${it.location.latitude} | ${it.location.longitude}")
-//                checkDestinationReached(it)
-//                _currentLocationEvent.postValue(it.location)
-//            }
-//            .onError {
-//                when (it) {
-//                    is LocationAvailabilityError,
-//                    is SettingsFailedError -> checkLocationSettings()
-//                }
-//            }
-//            .doOnSubscribe {
-//                Timber.d("Location updates started")
-//            }
-//            .subscribe()
-
         if (locationUpdatesDisposable?.isDisposed == false) return
 
         locationUpdatesDisposable = destinationLocation?.let { destinationLocation ->
@@ -197,6 +185,7 @@ class MapViewModel @Inject constructor(
                 .observeOn(AndroidSchedulers.mainThread())
                 .onSuccess {
                     Timber.d("Destination reached")
+                    proceedLevel()
                 }
                 .onError { error ->
                     when (error) {
@@ -206,6 +195,16 @@ class MapViewModel @Inject constructor(
                 }
                 .subscribe()
         }
+    }
+
+    @SuppressLint("CheckResult")
+    private fun proceedLevel() {
+        setDestinationReachedUseCase.setDestinationReached(ingameArgs.levelId)
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe {
+                _nextScreenEvent.postValue(ingameArgs)
+            }
+            .addTo(container)
     }
 
     private fun stopLocationUpdates() {
@@ -258,8 +257,9 @@ class MapViewModel @Inject constructor(
         }
     }
 
-    fun initWithLevelId(levelId: Long) {
-        getLevelProgressDataUseCase.getLevelProgressDataUseCase(levelId)
+    fun initWithLevelId(ingameArgs: IngameArgs) {
+        this.ingameArgs = ingameArgs
+        getLevelProgressDataUseCase.getLevelProgressDataUseCase(ingameArgs.levelId)
             .observeOn(Schedulers.computation())
             .flatMap {
                 levelDataUseCase.getLevelData(it.number)

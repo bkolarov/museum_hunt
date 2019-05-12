@@ -12,8 +12,8 @@
         <action
             android:id="@+id/action_home_to_unityLauncherFragment"
             app:destination="@id/unityLauncherFragment"
-            app:enterAnim="@anim/slide_in_right"
-            app:exitAnim="@anim/slide_out_left"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
             app:launchSingleTop="true"
             app:popEnterAnim="@android:anim/slide_in_left"
             app:popExitAnim="@android:anim/slide_out_right"
@@ -58,8 +58,8 @@
             app:popUpTo="@id/home"
             app:popUpToInclusive="true" />
         <argument
-            android:name="levelId"
-            app:argType="long" />
+            android:name="args"
+            app:argType="bg.tusofia.pmu.museumhunt.ingame.IngameArgs" />
     </fragment>
     <fragment
         android:id="@+id/unityLauncherFragment"
@@ -77,22 +77,13 @@
             app:popUpTo="@id/home"
             app:popUpToInclusive="true" />
         <argument
-            android:name="levelId"
-            app:argType="long" />
+            android:name="args"
+            app:argType="bg.tusofia.pmu.museumhunt.ingame.IngameArgs" />
     </fragment>
     <fragment
         android:id="@+id/mapFragment"
         android:name="bg.tusofia.pmu.museumhunt.ingame.location.MapFragment"
         tools:layout="@layout/fragment_map">
-        <action
-            android:id="@+id/action_mapFragment_to_gameCompletedFragment"
-            app:destination="@id/gameCompletedFragment"
-            app:enterAnim="@anim/slide_in_right"
-            app:exitAnim="@anim/slide_out_left"
-            app:popEnterAnim="@android:anim/slide_in_left"
-            app:popExitAnim="@android:anim/slide_out_right"
-            app:launchSingleTop="true"
-            app:popUpToInclusive="true" />
         <action
             android:id="@+id/action_mapFragment_pop"
             app:destination="@id/home"
@@ -103,8 +94,8 @@
             app:launchSingleTop="true"
             app:popUpToInclusive="true" />
         <argument
-            android:name="levelId"
-            app:argType="long" />
+            android:name="args"
+            app:argType="bg.tusofia.pmu.museumhunt.ingame.IngameArgs" />
     </fragment>
     <fragment android:id="@+id/gameCompletedFragment">
         <action

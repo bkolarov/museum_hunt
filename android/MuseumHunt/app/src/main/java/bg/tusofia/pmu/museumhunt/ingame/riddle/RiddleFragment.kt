@@ -53,7 +53,7 @@ class RiddleFragment : BaseFragment<FragmentRiddleBinding, RiddleViewModel>() {
         })
 
         viewModel.nextScreenEevent.observe(viewLifecycleOwner, Observer { args ->
-            args?.levelId?.let { findNavController().navigate(RiddleFragmentDirections.actionRiddleFragmentToMapFragment(it)) }
+            args?.let { findNavController().navigate(RiddleFragmentDirections.actionRiddleFragmentToMapFragment(it)) }
         })
 
         binding { vm ->
@@ -77,7 +77,7 @@ class RiddleFragment : BaseFragment<FragmentRiddleBinding, RiddleViewModel>() {
             rvAnswers.adapter = answersAdapter
         }
 
-        viewModel.init(input.levelId)
+        viewModel.init(input.args)
     }
 
     override fun instantiateViewModel(): RiddleViewModel =
