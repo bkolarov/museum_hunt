@@ -43,7 +43,8 @@ class MapViewModel @Inject constructor(
     private val getLevelProgressDataUseCase: GetLevelProgressDataUseCase,
     private val levelDataUseCase: GetLevelDataUseCase,
     private val locationService: LocationService,
-    private val checkLocationSettingsUseCase: CheckLocationSettingsUseCase
+    private val checkLocationSettingsUseCase: CheckLocationSettingsUseCase,
+    private val trackDestinationReachedUseCase: TrackDestinationReachedUseCase
 ) : BaseViewModel(resourceManager) {
 
     // Begin region Events
@@ -171,37 +172,39 @@ class MapViewModel @Inject constructor(
     @SuppressLint("MissingPermission")
     private fun startLocationUpdates() {
         Timber.d("Starting location updates")
-        locationUpdatesDisposable = locationUpdatesDisposable ?: locationService.requestUpdates(locationRequest)
-            .observeOn(AndroidSchedulers.mainThread())
-            .onUpdate {
-                Timber.d("location updated: ${it.location.latitude} | ${it.location.longitude}")
-                checkDestinationReached(it)
-                _currentLocationEvent.postValue(it.location)
-            }
-            .onError {
-                when (it) {
-                    is LocationAvailabilityError,
-                    is SettingsFailedError -> checkLocationSettings()
+//        locationUpdatesDisposable = locationUpdatesDisposable ?: locationService.requestUpdates(locationRequest)
+//            .observeOn(AndroidSchedulers.mainThread())
+//            .onUpdate {
+//                Timber.d("location updated: ${it.location.latitude} | ${it.location.longitude}")
+//                checkDestinationReached(it)
+//                _currentLocationEvent.postValue(it.location)
+//            }
+//            .onError {
+//                when (it) {
+//                    is LocationAvailabilityError,
+//                    is SettingsFailedError -> checkLocationSettings()
+//                }
+//            }
+//            .doOnSubscribe {
+//                Timber.d("Location updates started")
+//            }
+//            .subscribe()
+
+        if (locationUpdatesDisposable?.isDisposed == false) return
+
+        locationUpdatesDisposable = destinationLocation?.let { destinationLocation ->
+            trackDestinationReachedUseCase.startTracking(destinationLocation, _currentLocationEvent)
+                .observeOn(AndroidSchedulers.mainThread())
+                .onSuccess {
+                    Timber.d("Destination reached")
                 }
-            }
-            .doOnSubscribe {
-                Timber.d("Location updates started")
-            }
-            .subscribe()
-    }
-
-    private fun checkDestinationReached(currentLocation: LocationData) {
-        destinationLocation?.locationCoordinates?.let {
-            val results = floatArrayOf(0f)
-            Location.distanceBetween(
-                currentLocation.location.latitude,
-                currentLocation.location.longitude,
-                it.latitude,
-                it.longitude,
-                results)
-            val distance = results[0]
-
-            Timber.d("Distance to destination: $distance")
+                .onError { error ->
+                    when (error) {
+                        is LocationAvailabilityError,
+                        is SettingsFailedError -> checkLocationSettings()
+                    }
+                }
+                .subscribe()
         }
     }
 

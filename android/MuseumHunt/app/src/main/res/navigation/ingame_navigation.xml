@@ -12,10 +12,11 @@
         <action
             android:id="@+id/action_home_to_unityLauncherFragment"
             app:destination="@id/unityLauncherFragment"
-            app:enterAnim="@anim/nav_default_enter_anim"
-            app:exitAnim="@anim/nav_default_exit_anim"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
             app:launchSingleTop="true"
-            app:popExitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@android:anim/slide_in_left"
+            app:popExitAnim="@android:anim/slide_out_right"
             app:popUpTo="@id/home"
             app:popUpToInclusive="true" />
         <argument
@@ -24,17 +25,20 @@
         <action
             android:id="@+id/action_home_to_riddleFragment"
             app:destination="@id/riddleFragment"
-            app:enterAnim="@anim/nav_default_enter_anim"
-            app:exitAnim="@anim/nav_default_exit_anim"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
             app:launchSingleTop="true"
-            app:popExitAnim="@anim/nav_default_pop_exit_anim"
+            app:popEnterAnim="@android:anim/slide_in_left"
+            app:popExitAnim="@android:anim/slide_out_right"
             app:popUpTo="@id/home"
             app:popUpToInclusive="true" />
         <action
             android:id="@+id/action_home_to_mapFragment"
             app:destination="@id/mapFragment"
-            app:enterAnim="@anim/nav_default_enter_anim"
-            app:exitAnim="@anim/nav_default_exit_anim"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@android:anim/slide_in_left"
+            app:popExitAnim="@android:anim/slide_out_right"
             app:launchSingleTop="true"
             app:popUpToInclusive="false" />
     </fragment>
@@ -46,8 +50,10 @@
         <action
             android:id="@+id/action_riddleFragment_to_mapFragment"
             app:destination="@id/mapFragment"
-            app:enterAnim="@anim/nav_default_enter_anim"
-            app:exitAnim="@anim/nav_default_exit_anim"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@android:anim/slide_in_left"
+            app:popExitAnim="@android:anim/slide_out_right"
             app:launchSingleTop="true"
             app:popUpTo="@id/home"
             app:popUpToInclusive="true" />
@@ -63,10 +69,11 @@
         <action
             android:id="@+id/action_unityLauncherFragment_to_riddleFragment"
             app:destination="@id/riddleFragment"
-            app:enterAnim="@anim/nav_default_enter_anim"
-            app:exitAnim="@anim/nav_default_exit_anim"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
             app:launchSingleTop="true"
-            app:popExitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@android:anim/slide_in_left"
+            app:popExitAnim="@android:anim/slide_out_right"
             app:popUpTo="@id/home"
             app:popUpToInclusive="true" />
         <argument
@@ -80,15 +87,19 @@
         <action
             android:id="@+id/action_mapFragment_to_gameCompletedFragment"
             app:destination="@id/gameCompletedFragment"
-            app:enterAnim="@anim/nav_default_enter_anim"
-            app:exitAnim="@anim/nav_default_exit_anim"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@android:anim/slide_in_left"
+            app:popExitAnim="@android:anim/slide_out_right"
             app:launchSingleTop="true"
             app:popUpToInclusive="true" />
         <action
             android:id="@+id/action_mapFragment_pop"
             app:destination="@id/home"
-            app:enterAnim="@anim/nav_default_enter_anim"
-            app:exitAnim="@anim/nav_default_exit_anim"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@android:anim/slide_in_left"
+            app:popExitAnim="@android:anim/slide_out_right"
             app:launchSingleTop="true"
             app:popUpToInclusive="true" />
         <argument
@@ -99,8 +110,10 @@
         <action
             android:id="@+id/action_gameCompletedFragment_to_placeholder"
             app:destination="@id/home"
-            app:enterAnim="@anim/nav_default_enter_anim"
-            app:exitAnim="@anim/nav_default_enter_anim"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@android:anim/slide_in_left"
+            app:popExitAnim="@android:anim/slide_out_right"
             app:launchSingleTop="true"
             app:popUpToInclusive="true" />
     </fragment>
