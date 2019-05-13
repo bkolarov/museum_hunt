@@ -10,7 +10,7 @@ import javax.inject.Inject
 
 class CreateGameUserCase @Inject constructor(private val gameRepository: GameRepository) {
 
-    fun createGame(name: String): Single<Long> {
+    fun createGame(name: String): Single<Game> {
         val levelProgress = LevelProgress(number = 0, stage = LevelStage.INIT)
 
         return gameRepository.addLevelProgress(levelProgress)
@@ -22,6 +22,9 @@ class CreateGameUserCase @Inject constructor(private val gameRepository: GameRep
                 )
 
                 gameRepository.addGame(game)
+                    .map {
+                        Game(it, game.name, game.lastModified, game.levelId)
+                    }
             }
     }
 }

@@ -39,17 +39,17 @@ class UnityLauncherFragment : BaseFragment<ViewDataBinding, UnityLauncherViewMod
             }
 
             Timber.d("start unity with data: $unityData")
-//            startActivityForResult(intent, requestCodeUnityPlayer)
-            viewModel.onObstaclesPassed("{\n" +
-                    "        \"FoundWords\": [\n" +
-                    "            \"БИОЛОГИЯ\",\n" +
-                    "            \"ПРИРОДА\"\n" +
-                    "        ]\n" +
-                    "    }")
+            startActivityForResult(intent, requestCodeUnityPlayer)
+//            viewModel.onObstaclesPassed("{\n" +
+//                    "        \"FoundWords\": [\n" +
+//                    "            \"БИОЛОГИЯ\",\n" +
+//                    "            \"ПРИРОДА\"\n" +
+//                    "        ]\n" +
+//                    "    }")
         })
 
         viewModel.goBackEvent.observe(viewLifecycleOwner, Observer {
-            activity?.finish()
+            requireActivity().onBackPressedDispatcher.onBackPressed()
         })
 
         viewModel.openRiddleScreenEvent.observe(viewLifecycleOwner, Observer {

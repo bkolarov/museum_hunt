@@ -1,6 +1,7 @@
 package bg.tusofia.pmu.museumhunt.di.fragment
 
 import bg.tusofia.pmu.museumhunt.di.fragment.scope.FragmentScope
+import bg.tusofia.pmu.museumhunt.ingame.browse.BrowseGamesFragment
 import bg.tusofia.pmu.museumhunt.ingame.init.IngameHomeDestinationFragment
 import bg.tusofia.pmu.museumhunt.ingame.location.MapFragment
 import bg.tusofia.pmu.museumhunt.ingame.riddle.RiddleFragment
@@ -26,4 +27,8 @@ abstract class ContributesIngameFragmentModule {
     @FragmentScope
     @ContributesAndroidInjector(modules = [FragmentModule::class])
     abstract fun contributeMapFragment(): MapFragment
+
+    @FragmentScope
+    @ContributesAndroidInjector(modules = [FragmentModule::class])
+    abstract fun contributeBrowseFragment(): BrowseGamesFragment
 }

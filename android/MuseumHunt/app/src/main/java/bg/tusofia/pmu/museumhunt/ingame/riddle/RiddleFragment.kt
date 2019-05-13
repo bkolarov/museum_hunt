@@ -36,7 +36,7 @@ class RiddleFragment : BaseFragment<FragmentRiddleBinding, RiddleViewModel>() {
         viewModel.answersEvent.observe(viewLifecycleOwner, answersAdapter)
 
         viewModel.goBackEvent.observe(viewLifecycleOwner, Observer {
-            activity?.finish()
+            requireActivity().onBackPressedDispatcher.onBackPressed()
         })
 
         viewModel.errorSnackBarEvent.observe(viewLifecycleOwner, Observer {

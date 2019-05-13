@@ -17,8 +17,8 @@
             app:launchSingleTop="true"
             app:popEnterAnim="@android:anim/slide_in_left"
             app:popExitAnim="@android:anim/slide_out_right"
-            app:popUpTo="@id/home"
-            app:popUpToInclusive="true" />
+            app:popUpTo="@+id/browseGamesFragment"
+            app:popUpToInclusive="false" />
         <argument
             android:name="homeInput"
             app:argType="bg.tusofia.pmu.museumhunt.ingame.init.IngameHomeDestinationInput" />
@@ -30,17 +30,30 @@
             app:launchSingleTop="true"
             app:popEnterAnim="@android:anim/slide_in_left"
             app:popExitAnim="@android:anim/slide_out_right"
-            app:popUpTo="@id/home"
-            app:popUpToInclusive="true" />
+            app:popUpTo="@+id/browseGamesFragment"
+            app:popUpToInclusive="false" />
         <action
             android:id="@+id/action_home_to_mapFragment"
             app:destination="@id/mapFragment"
             app:enterAnim="@anim/slide_in_right"
             app:exitAnim="@anim/slide_out_left"
+            app:launchSingleTop="true"
             app:popEnterAnim="@android:anim/slide_in_left"
             app:popExitAnim="@android:anim/slide_out_right"
-            app:launchSingleTop="true"
+            app:popUpTo="@+id/browseGamesFragment"
             app:popUpToInclusive="false" />
+        <action
+            android:id="@+id/action_home_to_browseGamesFragment"
+            app:destination="@id/browseGamesFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@android:anim/slide_in_left"
+            app:popExitAnim="@android:anim/slide_out_right"
+            app:popUpTo="@+id/home"
+            app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/action_home_to_gameCompletedFragment"
+            app:destination="@id/gameCompletedFragment" />
     </fragment>
     <fragment
         android:id="@+id/riddleFragment"
@@ -52,11 +65,11 @@
             app:destination="@id/mapFragment"
             app:enterAnim="@anim/slide_in_right"
             app:exitAnim="@anim/slide_out_left"
+            app:launchSingleTop="true"
             app:popEnterAnim="@android:anim/slide_in_left"
             app:popExitAnim="@android:anim/slide_out_right"
-            app:launchSingleTop="true"
-            app:popUpTo="@id/home"
-            app:popUpToInclusive="true" />
+            app:popUpTo="@+id/browseGamesFragment"
+            app:popUpToInclusive="false" />
         <argument
             android:name="args"
             app:argType="bg.tusofia.pmu.museumhunt.ingame.IngameArgs" />
@@ -74,8 +87,8 @@
             app:launchSingleTop="true"
             app:popEnterAnim="@android:anim/slide_in_left"
             app:popExitAnim="@android:anim/slide_out_right"
-            app:popUpTo="@id/home"
-            app:popUpToInclusive="true" />
+            app:popUpTo="@+id/browseGamesFragment"
+            app:popUpToInclusive="false" />
         <argument
             android:name="args"
             app:argType="bg.tusofia.pmu.museumhunt.ingame.IngameArgs" />
@@ -89,10 +102,10 @@
             app:destination="@id/home"
             app:enterAnim="@anim/slide_in_right"
             app:exitAnim="@anim/slide_out_left"
+            app:launchSingleTop="true"
             app:popEnterAnim="@android:anim/slide_in_left"
             app:popExitAnim="@android:anim/slide_out_right"
-            app:launchSingleTop="true"
-            app:popUpToInclusive="true" />
+            app:popUpToInclusive="false" />
         <argument
             android:name="args"
             app:argType="bg.tusofia.pmu.museumhunt.ingame.IngameArgs" />
@@ -103,9 +116,10 @@
             app:destination="@id/home"
             app:enterAnim="@anim/slide_in_right"
             app:exitAnim="@anim/slide_out_left"
+            app:launchSingleTop="true"
             app:popEnterAnim="@android:anim/slide_in_left"
             app:popExitAnim="@android:anim/slide_out_right"
-            app:launchSingleTop="true"
+            app:popUpTo="@id/home"
             app:popUpToInclusive="true" />
     </fragment>
     <action
@@ -113,4 +127,28 @@
         app:destination="@id/home"
         app:launchSingleTop="true"
         app:popUpToInclusive="true" />
+    <fragment
+        android:id="@+id/browseGamesFragment"
+        android:name="bg.tusofia.pmu.museumhunt.ingame.browse.BrowseGamesFragment"
+        android:label="BrowseGamesFragment"
+        tools:layout="@layout/fragment_browse_games">
+        <action
+            android:id="@+id/action_browseGamesFragment_to_unityLauncherFragment"
+            app:destination="@id/unityLauncherFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@android:anim/slide_in_left"
+            app:popExitAnim="@android:anim/slide_out_right"
+            app:popUpTo="@+id/browseGamesFragment"
+            app:popUpToInclusive="false" />
+        <action
+            android:id="@+id/action_browseGamesFragment_to_home"
+            app:destination="@id/home"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@android:anim/slide_in_left"
+            app:popExitAnim="@android:anim/slide_out_right"
+            app:popUpTo="@+id/browseGamesFragment"
+            app:popUpToInclusive="true" />
+    </fragment>
 </navigation>

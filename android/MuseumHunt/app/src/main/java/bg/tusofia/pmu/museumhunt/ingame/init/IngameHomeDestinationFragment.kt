@@ -11,6 +11,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import bg.tusofia.pmu.museumhunt.base.fragment.BaseFragment
 import bg.tusofia.pmu.museumhunt.databinding.FragmentIngameHomeDestinationBinding
+import bg.tusofia.pmu.museumhunt.ingame.IngameArgs
 import kotlinx.android.parcel.Parcelize
 
 class IngameHomeDestinationFragment : BaseFragment<FragmentIngameHomeDestinationBinding, IngameHomeDestinationViewModel>() {
@@ -24,12 +25,20 @@ class IngameHomeDestinationFragment : BaseFragment<FragmentIngameHomeDestination
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewModel.openUnityModuleEvent.observe(viewLifecycleOwner, Observer {
+        viewModel.openUnityModuleEvent.observe(Observer {
             findNavController().navigate(IngameHomeDestinationFragmentDirections.actionHomeToUnityLauncherFragment(it))
         })
 
-        viewModel.openRiddleScreenEvent.observe(viewLifecycleOwner, Observer {
+        viewModel.openRiddleScreenEvent.observe(Observer {
             findNavController().navigate(IngameHomeDestinationFragmentDirections.actionHomeToRiddleFragment(it))
+        })
+
+        viewModel.openMapScreenEvent.observe(Observer {
+            findNavController().navigate(IngameHomeDestinationFragmentDirections.actionHomeToMapFragment(it))
+        })
+
+        viewModel.openBrowseGamesEvent.observe(Observer {
+            findNavController().navigate(IngameHomeDestinationFragmentDirections.actionHomeToBrowseGamesFragment())
         })
 
         viewModel.decideAction(input.homeInput)
@@ -43,8 +52,10 @@ class IngameHomeDestinationFragment : BaseFragment<FragmentIngameHomeDestination
 sealed class IngameHomeDestinationInput : Parcelable
 
 @Parcelize
-data class ContinueGameInput(
-    val gameId: Long) : IngameHomeDestinationInput()
+object ContinueGameInput : IngameHomeDestinationInput()
+
+@Parcelize
+data class ContinueLevelInput(val ingameArgs: IngameArgs) : IngameHomeDestinationInput()
 
 @Parcelize
 object NewGameInput : IngameHomeDestinationInput()

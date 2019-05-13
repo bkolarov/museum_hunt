@@ -17,7 +17,7 @@ import androidx.navigation.fragment.navArgs
 import bg.tusofia.pmu.museumhunt.R
 import bg.tusofia.pmu.museumhunt.base.fragment.BaseFragment
 import bg.tusofia.pmu.museumhunt.databinding.FragmentMapBinding
-import bg.tusofia.pmu.museumhunt.ingame.init.ContinueGameInput
+import bg.tusofia.pmu.museumhunt.ingame.init.ContinueLevelInput
 import bg.tusofia.pmu.museumhunt.location.LiveDataLocationSource
 import bg.tusofia.pmu.museumhunt.util.maps.addTo
 import com.google.android.gms.location.LocationSettingsStates
@@ -94,12 +94,12 @@ class MapFragment : BaseFragment<FragmentMapBinding, MapViewModel>(),
     private fun observeViewModel() {
         viewModel.apply {
             goBackEvent.observe(Observer {
-
+                requireActivity().onBackPressedDispatcher.onBackPressed()
             })
 
             nextScreenEvent.observe(Observer { args ->
                 args?.let {
-                    findNavController().navigate(MapFragmentDirections.actionMapFragmentPop(ContinueGameInput(it.gameId)))
+                    findNavController().navigate(MapFragmentDirections.actionMapFragmentPop(ContinueLevelInput(input.args)))
                 }
             })
 
