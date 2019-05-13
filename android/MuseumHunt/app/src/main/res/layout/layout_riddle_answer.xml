@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="viewModel"
+            type="bg.tusofia.pmu.museumhunt.ingame.riddle.AnswerItemViewModel" />
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <com.google.android.material.button.MaterialButton
+            style="@style/AppTheme.Button.Medium"
+            android:layout_width="0dp"
+            android:layout_height="64dp"
+            android:onClick="@{() -> viewModel.onClick()}"
+            android:text="@{viewModel.text}"
+            android:maxHeight="100dp"
+            android:textSize="14sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            tools:text="Музей по палеонтология и исторична геология" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>

@@ -1,0 +1,21 @@
+<resources>
+    <string name="app_name">Лов на музеи</string>
+    <string name="main_activity_new_game">Нова игра</string>
+    <string name="main_activity_continue">Продължи</string>
+    <string name="default_error_dialog_message">Опа! Нещо не е наред. Моля опитайте отново.</string>
+    <string name="ok">Добре</string>
+    <string name="menu_toolbar_help">Помощ</string>
+    <string name="riddle_answer_error">Грешен отговор!</string>
+    <string name="dialog_riddle_hint_title">Вашите подсказки са:</string>
+    <string name="map_open_maps">Отворете в Google карти</string>
+    <string name="map_title">Отидете на мястото</string>
+    <string name="permission_camera_never_askagain">Моля да разрешите локацията от настройките на телефона.</string>
+    <string name="cancel">Отказ</string>
+    <string name="permission_location_rationale">Достъпът до вашето местоположение е необходим, за да разберем, че сте стигнали до необходимата дестинация. Продължаването на нивото в противен случай е невъзможно!</string>
+    <string name="map_dialog_location_settings_change_needed_message">Моля разрешете вашето местоположение в настройките, за да продължите играта.</string>
+    <string name="map_help">Отидете на показаното на картата място, за да продължите играта.</string>
+    <string name="browse_games_title">Вашите игри</string>
+    <string name="create">Създай</string>
+    <string name="game_finished_text">Играта приключи</string>
+    <string name="game_finished_return_to_main">Кликнете на екрана,\nза да се върнете в началото</string>
+</resources>
