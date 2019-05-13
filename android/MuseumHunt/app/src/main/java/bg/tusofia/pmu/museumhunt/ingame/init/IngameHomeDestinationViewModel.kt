@@ -15,6 +15,7 @@ class IngameHomeDestinationViewModel @Inject constructor(
     val openRiddleScreenEvent get() = decideNextScreenByLevelUseCase.openRiddleScreenEvent
     val openMapScreenEvent get() = decideNextScreenByLevelUseCase.openMapScreenEvent
     val openBrowseGamesEvent get() = decideNextScreenByLevelUseCase.openBrowseGamesEvent
+    val openGameFinishedEvent get() = decideNextScreenByLevelUseCase.openGameFinishedScreenEvent
 
     fun decideAction(input: IngameHomeDestinationInput) {
         decideNextScreenByLevelUseCase.decideNextScreen(input)

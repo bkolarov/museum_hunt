@@ -14,7 +14,8 @@ import bg.tusofia.pmu.museumhunt.databinding.FragmentIngameHomeDestinationBindin
 import bg.tusofia.pmu.museumhunt.ingame.IngameArgs
 import kotlinx.android.parcel.Parcelize
 
-class IngameHomeDestinationFragment : BaseFragment<FragmentIngameHomeDestinationBinding, IngameHomeDestinationViewModel>() {
+class IngameHomeDestinationFragment :
+    BaseFragment<FragmentIngameHomeDestinationBinding, IngameHomeDestinationViewModel>() {
 
     private val input: IngameHomeDestinationFragmentArgs by navArgs()
 
@@ -41,11 +42,15 @@ class IngameHomeDestinationFragment : BaseFragment<FragmentIngameHomeDestination
             findNavController().navigate(IngameHomeDestinationFragmentDirections.actionHomeToBrowseGamesFragment())
         })
 
+        viewModel.openGameFinishedEvent.observe(Observer {
+            findNavController().navigate(IngameHomeDestinationFragmentDirections.actionHomeToGameCompletedFragment())
+        })
+
         viewModel.decideAction(input.homeInput)
     }
 
     override fun instantiateViewModel(): IngameHomeDestinationViewModel =
-            ViewModelProviders.of(this, viewModelFactory)[IngameHomeDestinationViewModel::class.java]
+        ViewModelProviders.of(this, viewModelFactory)[IngameHomeDestinationViewModel::class.java]
 
 }
 

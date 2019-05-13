@@ -25,6 +25,7 @@ class DecideNextScreenByGameUseCase @Inject constructor(
     val openRiddleScreenEvent = decideNextScreenByLevelUseCase.openRiddleScreenEvent
     val openMapScreenEvent = decideNextScreenByLevelUseCase.openMapScreenEvent
     val openBrowseGamesEvent: LiveData<Unit> = _openBrowseGamesEvent
+    val openGameFinishedScreenEvent: LiveData<Unit> = decideNextScreenByLevelUseCase.openGameFinishedScreenEvent
 
     fun decideNextScreen(input: IngameHomeDestinationInput): Completable {
         return when (input) {

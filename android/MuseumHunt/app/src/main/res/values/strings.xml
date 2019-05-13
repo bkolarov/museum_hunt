@@ -16,4 +16,6 @@
     <string name="map_help">Отидете на показаното на картата място, за да продължите играта.</string>
     <string name="browse_games_title">Вашите игри</string>
     <string name="create">Създай</string>
+    <string name="game_finished_text">Играта приключи</string>
+    <string name="game_finished_return_to_main">Кликнете на екрана,\nза да се върнете в началото</string>
 </resources>

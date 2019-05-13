@@ -3,6 +3,7 @@ package bg.tusofia.pmu.museumhunt.di.fragment
 import androidx.lifecycle.ViewModel
 import bg.tusofia.pmu.museumhunt.di.viewmodel.annotation.ViewModelKey
 import bg.tusofia.pmu.museumhunt.ingame.browse.BrowseGamesViewModel
+import bg.tusofia.pmu.museumhunt.ingame.finish.GameFinishedViewModel
 import bg.tusofia.pmu.museumhunt.ingame.init.IngameHomeDestinationViewModel
 import bg.tusofia.pmu.museumhunt.ingame.location.MapViewModel
 import bg.tusofia.pmu.museumhunt.ingame.riddle.RiddleViewModel
@@ -38,4 +39,9 @@ abstract class FragmentViewModelsModule {
     @IntoMap
     @ViewModelKey(BrowseGamesViewModel::class)
     abstract fun bindBrowseGamesViewModel(viewModel: BrowseGamesViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(GameFinishedViewModel::class)
+    abstract fun bindGameFinishedViewModel(viewModel: GameFinishedViewModel): ViewModel
 }

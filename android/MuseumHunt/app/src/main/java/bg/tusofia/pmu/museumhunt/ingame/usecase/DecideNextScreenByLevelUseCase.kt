@@ -15,15 +15,18 @@ import javax.inject.Inject
 class DecideNextScreenByLevelUseCase @Inject constructor(
     private val getLevelProgressDataUseCase: GetLevelProgressDataUseCase,
     private val getLevelDataUseCase: GetLevelDataUseCase,
-    private val gameRepository: GameRepository) {
+    private val gameRepository: GameRepository
+) {
 
     private val _openUnityModuleEvent = LiveEvent<IngameArgs>()
     private val _openRiddleScreenEvent = LiveEvent<IngameArgs>()
     private val _openMapScreenEvent = LiveEvent<IngameArgs>()
+    private val _openGameFinishedScreenEvent = LiveEvent<Unit>()
 
     val openUnityModuleEvent: LiveData<IngameArgs> = _openUnityModuleEvent
     val openRiddleScreenEvent: LiveData<IngameArgs> = _openRiddleScreenEvent
     val openMapScreenEvent: LiveData<IngameArgs> = _openMapScreenEvent
+    val openGameFinishedScreenEvent: LiveData<Unit> = _openGameFinishedScreenEvent
 
     fun decideNextScreenUseCase(ingameArgs: IngameArgs): Completable {
         return getLevelProgressDataUseCase.getLevelProgressDataUseCase(ingameArgs.levelId)
@@ -37,9 +40,14 @@ class DecideNextScreenByLevelUseCase @Inject constructor(
                         getLevelDataUseCase.getLevelData(levelProgress.number)
                             .flatMapCompletable { levelData ->
                                 if (levelData.isLast) {
+                                    _openGameFinishedScreenEvent.postValue(Unit)
                                     Completable.complete()
                                 } else {
-                                    val newProgress = LevelProgress(id = ingameArgs.levelId, number = levelProgress.number + 1, stage = LevelStage.INIT)
+                                    val newProgress = LevelProgress(
+                                        id = ingameArgs.levelId,
+                                        number = levelProgress.number + 1,
+                                        stage = LevelStage.INIT
+                                    )
                                     gameRepository.updateLevelProgress(newProgress)
                                         .doOnComplete {
                                             _openUnityModuleEvent.postValue(ingameArgs)
