@@ -8,7 +8,6 @@ import bg.tusofia.pmu.museumhunt.base.resources.ResourceManager
 import bg.tusofia.pmu.museumhunt.base.viewmodel.BaseViewModel
 import bg.tusofia.pmu.museumhunt.domain.db.entity.Game
 import bg.tusofia.pmu.museumhunt.domain.usecases.game.CreateGameUserCase
-import bg.tusofia.pmu.museumhunt.domain.usecases.game.GetGamesSortedByDateUseCase
 import bg.tusofia.pmu.museumhunt.domain.usecases.game.GetGamesUseCase
 import bg.tusofia.pmu.museumhunt.util.rx.addTo
 import com.hadilq.liveevent.LiveEvent
@@ -19,8 +18,7 @@ import javax.inject.Inject
 class MainActivityViewModel @Inject constructor(
     resourceManager: ResourceManager,
     private val getGamesUseCase: GetGamesUseCase,
-    private val createGameUserCase: CreateGameUserCase,
-    private val getGamesSortedByDateUseCase: GetGamesSortedByDateUseCase
+    private val createGameUserCase: CreateGameUserCase
 ) : BaseViewModel(resourceManager) {
 
     private val _newGameEvent = LiveEvent<Pair<Long, Long>>()
@@ -44,12 +42,11 @@ class MainActivityViewModel @Inject constructor(
 
     @OnLifecycleEvent(Lifecycle.Event.ON_CREATE)
     fun onCreate() {
-        getGamesUseCase.getGames()
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe(Consumer {
-                games = it
-            })
-            .addTo(container)
+        refresh()
+    }
+
+    fun onReturn() {
+        refresh()
     }
 
     fun onNewGameClick() {
@@ -68,6 +65,15 @@ class MainActivityViewModel @Inject constructor(
 
     fun onContinueClick() {
         _continueGameEvent.value = Unit
+    }
+
+    private fun refresh() {
+        getGamesUseCase.getGames()
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe(Consumer {
+                games = it
+            })
+            .addTo(container)
     }
 
 }

@@ -18,4 +18,6 @@
     <string name="create">Създай</string>
     <string name="game_finished_text">Играта приключи</string>
     <string name="game_finished_return_to_main">Кликнете на екрана,\nза да се върнете в началото</string>
+    <string name="dialog_new_game_hint">Име</string>
+    <string name="dialog_new_game_title">Въведете името на вашата игра</string>
 </resources>

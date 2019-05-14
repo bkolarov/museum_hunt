@@ -16,6 +16,12 @@ import bg.tusofia.pmu.museumhunt.ingame.init.ContinueLevelInput
 
 class MainActivity : BaseActivity<ActivityMainBinding, MainActivityViewModel>() {
 
+    companion object {
+        private const val reqCodeNewGame = 3
+        private const val reqCodeContinueGame = 4
+
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val binding = DataBindingUtil.setContentView<ActivityMainBinding>(this, R.layout.activity_main)
@@ -25,17 +31,17 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainActivityViewModel>() 
         viewModel.newGameLiveEvent.observe(this, Observer { (gameId, levelId) ->
             val intent = Intent(this, IngameActivity::class.java)
             intent.putExtra(IngameActivity.KEY_HOME_INPUT, ContinueLevelInput(IngameArgs(gameId, levelId)))
-            startActivity(intent)
+            startActivityForResult(intent, reqCodeNewGame)
         })
 
         viewModel.continueGameLiveEvent.observe(this, Observer {
             val intent = Intent(this, IngameActivity::class.java)
             intent.putExtra(IngameActivity.KEY_HOME_INPUT, ContinueGameInput)
-            startActivity(intent)
+            startActivityForResult(intent, reqCodeContinueGame)
         })
         viewModel.requireGameNameEvent.observe(this, Observer {
             val dialogView = View.inflate(this, R.layout.dialog_new_game, null)
-            InputDialogBuilder(this, R.style.AppTheme_Dialog_InGame)
+            InputDialogBuilder(this, R.style.AppTheme_Dialog)
                 .setView(dialogView)
                 .setPositiveButton(R.string.create, callback = { text, _, _ ->
                     viewModel.onCreateGameWithName(text)
@@ -43,7 +49,14 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainActivityViewModel>() 
                 .setNegativeButton(R.string.cancel, null)
                 .show()
         })
+    }
 
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        when (requestCode) {
+            reqCodeNewGame, reqCodeContinueGame -> viewModel.onReturn()
+        }
     }
 
     override fun instantiateViewModel(): MainActivityViewModel =
